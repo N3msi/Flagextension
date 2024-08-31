@@ -5,6 +5,7 @@ must haves:
 - fix serverlogerrors
 
 nice-to-haves:
+- redo armbanddummy.p3d
 - fix rvmats dusk/dawn behavior
 - direct attaching of armbanddummy to flagpole
 - slingbag

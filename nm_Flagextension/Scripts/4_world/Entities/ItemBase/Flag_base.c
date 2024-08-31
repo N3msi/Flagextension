@@ -35,28 +35,19 @@ modded class Hologram
 modded class Flag_Base
 {
 	ref protected EffectSound m_DeployLoopSound;
-    private string m_nmFlagTexture; // stored Flag Tex
 	private string materialPathfolded; // stored materialbased on EEHealthLevelChanged
 	private string materialPathunfolded; // stored materialbased on EEHealthLevelChanged
-    private bool m_Isfolded; // Save visible selection
-    private bool m_Isunfolded; // Save visible selection
 	
 	void Flag_Base()
 	{
-		string m_nmFlagTexture = GetHiddenSelectionsTextures()[0]; // Get FlagTexture
-		m_Isunfolded = false;
-		m_Isfolded = true;
-		ApplyVisibility();
+		EEHealthLevelChanged(GetHealthLevel(), GetHealthLevel(), "");
+		ShowSelection("folded");
+		HideSelection("unfolded");
 	}
 	
 	void ~Flag_Base()
 	{
 	}
-
-    string GetnmFlagTexture()
-    {
-        return m_nmFlagTexture;
-    }
 	
 	// --- SYNCHRONIZATION
 	void Synchronize()
@@ -65,6 +56,43 @@ modded class Flag_Base
 		{
 			SetSynchDirty();
 		}
+	}
+	
+	override void OnVariablesSynchronized()
+	{
+		super.OnVariablesSynchronized();	
+	}
+	
+	// --- EVENTS
+	override void OnStoreSave( ParamsWriteContext ctx )
+	{   
+		super.OnStoreSave( ctx );
+	}
+	
+	override bool OnStoreLoad(ParamsReadContext ctx, int version)
+	{
+		if (!super.OnStoreLoad(ctx, version))
+			return false;
+
+		EntityAI parent = GetHierarchyParent();
+
+		// Check if attached and if attached to player
+		if (parent != null && !parent.IsKindOf("SurvivorBase"))
+		{
+			SetObjectMaterial(0, materialPathunfolded);
+		}
+		else
+		{
+			SetObjectMaterial(0, materialPathfolded);
+		}
+
+		return true;
+	}
+	
+	override void AfterStoreLoad()
+	{	
+		super.AfterStoreLoad();
+				
 	}
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone) 	///bypassing damagesys to apply Material
@@ -92,82 +120,19 @@ modded class Flag_Base
                 materialPathunfolded = "nm_Flagextension\\flag\\data\\nm_flag_folded.rvmat"; // Fallback material
                 break;
         }
-
-        // Reapply visibility and material
-        ApplyVisibility();
-    }
-	
-	void ApplyVisibility()
-    {
-        if (m_Isfolded)
-        {
-			ShowSelection("folded");
-			HideSelection("unfolded");
-        }
-        else
-        {
-			HideSelection("folded");
-			ShowSelection("unfolded");
-        }
-        if (m_Isunfolded)
-        {
-			HideSelection("folded");
-			ShowSelection("unfolded");
-        }
-        else
-        {
-			ShowSelection("folded");
-			HideSelection("unfolded");
-        }
-    }
-	
-	// --- EVENTS
-    override void OnStoreSave(ParamsWriteContext ctx)
-    {
-        super.OnStoreSave(ctx);
-        ctx.Write(m_nmFlagTexture); // Save Flag Tex
-        ctx.Write(m_Isfolded); // Save visible selection
-        ctx.Write(m_Isunfolded); // Save visible selection
-    }
-
-    override bool OnStoreLoad(ParamsReadContext ctx, int version)
-    {
-        if (!super.OnStoreLoad(ctx, version))
-            return false;
-
-        if (!ctx.Read(m_nmFlagTexture))
-            return false;
-
-        if (!ctx.Read(m_Isfolded))
-            m_Isfolded = false;
-
-        if (!ctx.Read(m_Isunfolded))
-            m_Isunfolded = false;
 		
-        return true;
-    }
+		EntityAI parent = GetHierarchyParent();
 
-	override void AfterStoreLoad()
-	{	
-		super.AfterStoreLoad();
-		ApplyVisibility();		
-	}
-	
-	override void OnVariablesSynchronized()
-	{
-		super.OnVariablesSynchronized();
-
-		if (IsDeploySound())
+		// Check if attached and if attached to player
+		if (parent != null && !parent.IsKindOf("SurvivorBase"))
 		{
-			PlayDeploySound();
+			SetObjectMaterial(0, materialPathunfolded);
 		}
-
-		if (CanPlayDeployLoopSound())
+		else
 		{
-			PlayDeployLoopSound();
+			SetObjectMaterial(0, materialPathfolded);
 		}
-		ApplyVisibility();
-	}
+    }	
 
 	void DeletenmFlag(EntityAI flag)
 	{
@@ -187,9 +152,9 @@ modded class Flag_Base
 		
 		if (parent.IsKindOf("TerritoryFlag"))
 		{	
-			m_Isfolded = false;
-			m_Isunfolded = true;
-			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ApplyVisibility, 50, false, this, slot_id);
+			SetObjectMaterial(0, materialPathunfolded); // mats tex on unfolded
+			ShowSelection("unfolded");
+			HideSelection("folded");
 		}
 		else if (parent.IsKindOf("SurvivorBase"))
 		{
@@ -211,11 +176,11 @@ modded class Flag_Base
 	{
 		super.OnWasDetached(parent,slot_id);
 		
-		m_Isfolded = true;
-		m_Isunfolded = false;
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ApplyVisibility, 50, false, this, slot_id);		
+		SetObjectMaterial(0, materialPathfolded); // mats tex on unfolded
+		ShowSelection("folded");
+		HideSelection("unfolded");	
 	}
-	
+
 	override void OnPlacementComplete(Man player, vector position = "0 0 0", vector orientation = "0 0 0")
 	{
 		super.OnPlacementComplete(player, position, orientation);
@@ -270,4 +235,27 @@ modded class Flag_Base
     {
         return "nm_Flag_placing";
     }
+	
+	override int GetViewIndex()
+	{
+		if ( MemoryPointExists( "invView2" ) )
+		{		
+			InventoryLocation il = new InventoryLocation;
+			GetInventory().GetCurrentInventoryLocation( il );
+			InventoryLocationType type = il.GetType();
+			switch ( type )
+			{
+				case InventoryLocationType.ATTACHMENT:
+				{
+					return 1;
+				}
+				default:
+				{
+					return 0;
+				}
+			}
+		}
+		return 0;
+	}
 }
+

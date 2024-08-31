@@ -8,5 +8,6 @@ nice-to-haves:
 - fix rvmats dusk/dawn behavior
 - direct attaching of armbanddummy to flagpole
 - slingbag
+- bandana
 - flagepoleitem to find and place
 - mod.cpp and logo.edds

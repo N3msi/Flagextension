@@ -9,3 +9,4 @@ nice-to-haves:
 - direct attaching of armbanddummy to flagpole
 - slingbag
 - flagepoleitem to find and place
+- mod.cpp and logo.edds

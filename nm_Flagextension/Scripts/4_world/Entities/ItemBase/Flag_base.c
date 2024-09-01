@@ -40,7 +40,7 @@ modded class Flag_Base
 	
 	void Flag_Base()
 	{
-		UpdateVisualState()
+		UpdateVisualState();
 	}
 	
 	void ~Flag_Base()
@@ -48,7 +48,7 @@ modded class Flag_Base
 	}
 	
 	// --- SYNCHRONIZATION
-	void Synchronize()
+	override void Synchronize()
 	{
 		if ( GetGame().IsServer() )
 		{
@@ -60,7 +60,7 @@ modded class Flag_Base
     {
         super.EEInit();
 
-		UpdateVisualState()
+		UpdateVisualState();
     }
 	
 	override void OnVariablesSynchronized()
@@ -82,7 +82,7 @@ modded class Flag_Base
 		EntityAI parent = GetHierarchyParent();
 
 		// Check if attached and if attached to player
-		if (parent.IsKindOf("TerritoryFlag"))
+		if (parent && parent.IsKindOf("TerritoryFlag"))
 		{
 			SetObjectMaterial(0, materialPathunfolded);
 		}
@@ -96,15 +96,14 @@ modded class Flag_Base
 	
 	override void AfterStoreLoad()
 	{	
-		super.AfterStoreLoad();
-				
+		super.AfterStoreLoad();				
 	}
 
 	void UpdateVisualState()
 	{	
 		EntityAI parent = GetHierarchyParent();
 	
-		if (parent && parent.IsKindOf("TerritoryFlag")
+		if (parent && parent.IsKindOf("TerritoryFlag"))
 		{
 			SetObjectMaterial(0, materialPathunfolded);
 			ShowSelection("unfolded");
@@ -143,7 +142,7 @@ modded class Flag_Base
                 materialPathunfolded = "nm_Flagextension\\flag\\data\\nm_flag_unfolded.rvmat"; // Fallback material
                 break;
         }	
-		UpdateVisualState()
+		UpdateVisualState();
     }	
 
 	void DeletenmFlag(EntityAI flag)
@@ -270,5 +269,3 @@ modded class Flag_Base
 		return 0;
 	}
 }
-
-

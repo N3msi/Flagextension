@@ -1,7 +1,7 @@
 TODO:
 must haves:
-- damage system on vanillaflag (on it - n3msi)
-- fix selectionfunctionality on premodinstall-flags (on it - n3msi)
+- damage system on vanillaflag (done)
+- fix selectionfunctionality on premodinstall-flags (done)
 - fix serverlogerrors
 
 nice-to-haves:

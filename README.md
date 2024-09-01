@@ -2,7 +2,7 @@ TODO:
 must haves:
 - damage system on vanillaflag (done)
 - fix selectionfunctionality on premodinstall-flags (done)
-- fix serverlogerrors
+- fix serverlogerrors (Buddy)
 
 nice-to-haves:
 - redo armbanddummy.p3d

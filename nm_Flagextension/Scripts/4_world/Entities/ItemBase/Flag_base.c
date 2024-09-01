@@ -40,9 +40,7 @@ modded class Flag_Base
 	
 	void Flag_Base()
 	{
-		EEHealthLevelChanged(GetHealthLevel(), GetHealthLevel(), "");
-		ShowSelection("folded");
-		HideSelection("unfolded");
+		UpdateVisualState()
 	}
 	
 	void ~Flag_Base()
@@ -57,10 +55,17 @@ modded class Flag_Base
 			SetSynchDirty();
 		}
 	}
+
+    override void EEInit()
+    {
+        super.EEInit();
+
+		UpdateVisualState()
+    }
 	
 	override void OnVariablesSynchronized()
 	{
-		super.OnVariablesSynchronized();	
+		super.OnVariablesSynchronized();
 	}
 	
 	// --- EVENTS
@@ -77,7 +82,7 @@ modded class Flag_Base
 		EntityAI parent = GetHierarchyParent();
 
 		// Check if attached and if attached to player
-		if (parent != null && !parent.IsKindOf("SurvivorBase"))
+		if (parent.IsKindOf("TerritoryFlag"))
 		{
 			SetObjectMaterial(0, materialPathunfolded);
 		}
@@ -95,6 +100,24 @@ modded class Flag_Base
 				
 	}
 
+	void UpdateVisualState()
+	{	
+		EntityAI parent = GetHierarchyParent();
+	
+		if (parent && parent.IsKindOf("TerritoryFlag")
+		{
+			SetObjectMaterial(0, materialPathunfolded);
+			ShowSelection("unfolded");
+			HideSelection("folded");
+		}
+		else
+		{
+			SetObjectMaterial(0, materialPathfolded);
+			ShowSelection("folded");
+			HideSelection("unfolded");
+		}
+	}
+	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone) 	///bypassing damagesys to apply Material
     {
         super.EEHealthLevelChanged(oldLevel, newLevel, zone);
@@ -117,21 +140,10 @@ modded class Flag_Base
                 break;
             default:
                 materialPathfolded = "nm_Flagextension\\flag\\data\\nm_flag_folded.rvmat"; // Fallback material
-                materialPathunfolded = "nm_Flagextension\\flag\\data\\nm_flag_folded.rvmat"; // Fallback material
+                materialPathunfolded = "nm_Flagextension\\flag\\data\\nm_flag_unfolded.rvmat"; // Fallback material
                 break;
-        }
-		
-		EntityAI parent = GetHierarchyParent();
-
-		// Check if attached and if attached to player
-		if (parent != null && !parent.IsKindOf("SurvivorBase"))
-		{
-			SetObjectMaterial(0, materialPathunfolded);
-		}
-		else
-		{
-			SetObjectMaterial(0, materialPathfolded);
-		}
+        }	
+		UpdateVisualState()
     }	
 
 	void DeletenmFlag(EntityAI flag)
@@ -150,13 +162,7 @@ modded class Flag_Base
 		string nmFlagName = this.GetType(); // get FlagName
 		float nmFlagHealth = this.GetHealth(); // get Flag Health
 		
-		if (parent.IsKindOf("TerritoryFlag"))
-		{	
-			SetObjectMaterial(0, materialPathunfolded); // mats tex on unfolded
-			ShowSelection("unfolded");
-			HideSelection("folded");
-		}
-		else if (parent.IsKindOf("SurvivorBase"))
+		if (parent && parent.IsKindOf("SurvivorBase"))
 		{
 			EntityAI ABSlot = parent.FindAttachmentBySlotName("armband");
 			EntityAI BackSlot = parent.FindAttachmentBySlotName("back");			
@@ -169,6 +175,12 @@ modded class Flag_Base
 			// delete flag fist to prevent bugged slot
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeletenmFlag, 50, false, this);
 			}
+		}
+		else
+		{	
+			SetObjectMaterial(0, materialPathunfolded); // mats tex on unfolded
+			ShowSelection("unfolded");
+			HideSelection("folded");
 		}
 	}
 
@@ -258,4 +270,5 @@ modded class Flag_Base
 		return 0;
 	}
 }
+
 

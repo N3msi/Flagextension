@@ -50,6 +50,14 @@ class cfgVehicles
 		carveNavmesh = 1;
 		itemBehaviour=1;
 		physLayer = "item_small";
+		hiddenSelections[]=
+		{
+			"camo"
+		};
+		hiddenSelectionsTextures[]=
+		{
+			"dz\gear\camping\data\flag_chern_co.paa"
+		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -393,6 +401,112 @@ class cfgVehicles
 		{
 			male="nm_Flagextension\flag\nm_DoubleABDummy_m.p3d";
 			female="nm_Flagextension\flag\nm_DoubleABDummy_f.p3d";
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class pickUpItem
+				{
+					soundSet="Shirt_pickup_SoundSet";
+					id=797;
+				};
+				class drop
+				{
+					soundset="Shirt_drop_SoundSet";
+					id=898;
+				};
+			};
+		};
+	};
+
+	class nm_BandanaDummy: Clothing
+	{
+		scope=2;
+		displayName="$STR_cfgvehicles_bandana_colorbase0";
+		descriptionShort="$STR_cfgvehicles_bandana_colorbase1";
+		model="nm_Flagextension\flag\nm_BandanaHybrid_g.p3d";
+		simulation="clothing";
+		vehicleClass="Clothing";
+		itemInfo[]=
+		{
+			"Clothing",
+			"Headgear"
+		};
+		visibilityModifier=0.89999998;
+		inventorySlot[]=
+		{
+			"Headgear",
+			"Mask"
+		};
+		rotationFlags=34;
+		weight=120;
+		itemSize[]={3,1};
+		ragQuantity=1;
+		varWetMax=1;
+		heatIsolation=0.40000001;
+		repairableWithKits[]={5,2};
+		repairCosts[]={30,25};
+		headSelectionsToHide[]=
+		{
+			"Clipping_BandanaHead",
+			"Clipping_BandanaFace"
+		};
+		hiddenSelections[]=
+		{
+		//	"hat",
+		//	"mask",
+		//	"camo"
+		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints=100;
+					healthLevels[]=
+					{
+						{1,{""}},
+						{0.69999999,{""}},
+						{0.5,{""}},
+						{0.30000001,{""}},
+						{0,{""}}
+					};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class FragGrenade
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Infected
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Melee
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+			};
+		};
+		class ClothingTypes
+		{
+			male="nm_Flagextension\flag\nm_BandanaHybrid_m.p3d";
+			female="nm_Flagextension\flag\nm_BandanaHybrid_f.p3d";
 		};
 		class AnimEvents
 		{

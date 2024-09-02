@@ -8,7 +8,7 @@ PixelShaderID="Super";
 VertexShaderID="Super";
 class Stage1
 {
-	texture="nm_Flagextension\flag\data\nm_ArmbandDummy_nohq.paa";
+	texture="nm_Flagextension\flag\data\nm_Bandana_nohq.paa";
 	uvSource="tex";
 	class uvTransform
 	{

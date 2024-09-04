@@ -161,38 +161,48 @@ class nm_DoubleArmbandDummy extends Clothing
         ApplyVisibility();
     }
 
-    void ApplyTexture(EntityAI parent, int slot_id = -1)
-    {
-        if (GetGame().IsServer()) // serverside
-        {
-            PlayerBase player = PlayerBase.Cast(parent.GetHierarchyRootPlayer());
-            if (player)
-            {
-                if (player.FindAttachmentBySlotName("Body")) // check for Clothing_Tops
-                {
-                    m_IsBigVisible = true;
-                    m_IsSmallVisible = false;
-                    SetObjectTexture(1, m_nmFlagTexture); // show tex on big
+	void ApplyTexture(EntityAI parent, int slot_id = -1)
+	{
+		if (GetGame().IsServer()) // serverside
+		{
+			PlayerBase player = null;
+			if (parent)
+			{
+				EntityAI rootEntity = parent.GetHierarchyRootPlayer();
+				if (rootEntity)
+				{
+					player = PlayerBase.Cast(rootEntity);
+				}
+			}
+			
+			if (player)
+			{
+				if (player.FindAttachmentBySlotName("Body")) // check for Clothing_Tops
+				{
+					m_IsBigVisible = true;
+					m_IsSmallVisible = false;
+					SetObjectTexture(1, m_nmFlagTexture); // show tex on big
 					SetObjectMaterial(1, materialPath); // show mats on big
-                    SetObjectTexture(0, ""); // hide tex on small
+					SetObjectTexture(0, ""); // hide tex on small
 					SetObjectMaterial(0, ""); // hide mats on small
-                    SetObjectTexture(2, m_nmFlagTexture); // _g tex
-					SetObjectMaterial(2, materialPath); //  _g mat
-                }
-                else
-                {
-                    m_IsBigVisible = false;
-                    m_IsSmallVisible = true;
-                    SetObjectTexture(0, m_nmFlagTexture); // show tex on small
+					SetObjectTexture(2, m_nmFlagTexture); // _g tex
+					SetObjectMaterial(2, materialPath); // _g mat
+				}
+				else
+				{
+					m_IsBigVisible = false;
+					m_IsSmallVisible = true;
+					SetObjectTexture(0, m_nmFlagTexture); // show tex on small
 					SetObjectMaterial(0, materialPath); // show mats on small
-                    SetObjectTexture(1, ""); // hide tex on big
+					SetObjectTexture(1, ""); // hide tex on big
 					SetObjectMaterial(1, ""); // hide mats on big
-                    SetObjectTexture(2, m_nmFlagTexture); // _g tex
-					SetObjectMaterial(2, materialPath); //  _g mat
-                }
-            }
-        }
-    }
+					SetObjectTexture(2, m_nmFlagTexture); // _g tex
+					SetObjectMaterial(2, materialPath); // _g mat
+				}
+			}
+		}
+	}
+
 
 	override void OnWasAttached(EntityAI parent, int slot_id)
 	{
@@ -206,14 +216,17 @@ class nm_DoubleArmbandDummy extends Clothing
 		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ApplyTexture, 50, false, this, slot_id);
 	}
 
-    override void SwitchItemSelectionTextureEx(EItemManipulationContext context, Param par = null)
-    {
-        super.SwitchItemSelectionTextureEx(context, par);
-        if (context == EItemManipulationContext.ATTACHING || context == EItemManipulationContext.UPDATE)
-        {
-            EntityAI parent = GetHierarchyParent();
-            int defaultSlotID = -1;
-            ApplyTexture(parent, defaultSlotID);
-        }
-    }
+	override void SwitchItemSelectionTextureEx(EItemManipulationContext context, Param par = null)
+	{
+		super.SwitchItemSelectionTextureEx(context, par);
+		if (context == EItemManipulationContext.ATTACHING || context == EItemManipulationContext.UPDATE)
+		{
+			EntityAI parent = GetHierarchyParent();
+			int defaultSlotID = -1;
+			if (parent)
+			{
+				ApplyTexture(parent, defaultSlotID);
+			}
+		}
+	}
 }

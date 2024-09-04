@@ -1,22 +1,3 @@
-class nmTurnArmbandToFlag : TurnItemIntoItemLambda
-{
-	void nmTurnArmbandToFlag(EntityAI old_item, string new_item_type, PlayerBase player)
-	{
-		SetTransferParams();
-	}
-
-    override void OnSuccess(EntityAI new_item)
-    {
-        super.OnSuccess(new_item);
-
-		Flag_Base flagItem;
-		if (Flag_Base.CastTo(flagItem, new_item))
-		{
-			flagItem.UpdateVisualState();
-		}
-    }  
-}
-
 class nmPlaceFlagonGround : TurnItemIntoItemLambda
 {
 	protected vector m_Orientation;

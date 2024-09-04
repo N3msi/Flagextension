@@ -4,6 +4,14 @@ class nm_Flag_deployed extends ItemBase
     private string m_nmFlagName;
 	private string materialPath;	// Flag Name
 
+	void nm_Flag_deployed()
+	{
+	}
+	
+	void ~nm_Flag_deployed()
+	{
+	}
+	
 	void SetFlagAttributes(string texturePath, string nmFlagName)
     {
         m_nmFlagTexture = texturePath;

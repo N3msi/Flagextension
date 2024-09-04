@@ -139,11 +139,11 @@ class cfgVehicles
 					hitpoints=100;
 					healthLevels[]=
 					{
-						{1,{"nm_Flagextension\flag\data\nm_Flag_frame.rvmat"}},
-						{0.69999999,{"nm_Flagextension\flag\data\nm_Flag_frame.rvmat"}},
-						{0.5,{"nm_Flagextension\flag\data\nm_Flag_frame_damage.rvmat"}},
-						{0.30000001,{"nm_Flagextension\flag\data\nm_Flag_frame_damage.rvmat"}},
-						{0,{"nm_Flagextension\flag\data\nm_Flag_frame_destruct.rvmat"}}
+						{1,{""}},
+						{0.69999999,{""}},
+						{0.5,{""}},
+						{0.30000001,{""}},
+						{0,{""}}
 					};
 				};
 			};
@@ -319,53 +319,18 @@ class cfgVehicles
 		};		
 		class DamageSystem
 		{
-			class GlobalHealth
+						class GlobalHealth
 			{
 				class Health
 				{
 					hitpoints=100;
 					healthLevels[]=
 					{
-						{
-							1,
-							{
-							"nm_Flagextension\flag\data\nm_ArmbandDummy.rvmat", //doesnt work
-							"nm_Flagextension\flag\data\nm_ArmbandDummy.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy.rvmat"
-							}
-						},
-						{
-							0.69999999,
-							{
-							"nm_Flagextension\flag\data\nm_ArmbandDummy.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy.rvmat"
-							}
-						},
-						{
-							0.5,
-							{
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_damage.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_damage.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_damage.rvmat"
-							}
-						},
-						{
-							0.30000001,
-							{
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_damage.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_damage.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_damage.rvmat"
-							}
-						},
-						{
-							0,
-							{
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_destruct.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_destruct.rvmat",
-							"nm_Flagextension\flag\data\nm_ArmbandDummy_destruct.rvmat"
-							}
-						}
+						{1,{""}},
+						{0.69999999,{""}},
+						{0.5,{""}},
+						{0.30000001,{""}},
+						{0,{""}}
 					};
 				};
 			};
@@ -454,9 +419,9 @@ class cfgVehicles
 		};
 		hiddenSelections[]=
 		{
-		//	"hat",
-		//	"mask",
-		//	"camo"
+			"hat",
+			"mask",
+			"camo"
 		};
 		class DamageSystem
 		{
@@ -520,6 +485,112 @@ class cfgVehicles
 				class drop
 				{
 					soundset="Shirt_drop_SoundSet";
+					id=898;
+				};
+			};
+		};
+	};
+	class nm_SlingbagDummy: Clothing
+	{
+		scope=2;
+		displayName="$STR_nmSlingbagDummy";
+		descriptionShort="$STR_nmSlingbagDummyDISC";
+		model="nm_Flagextension\flag\nm_SlingbagDummy_g.p3d";
+		debug_ItemCategory=9;
+		inventorySlot[]=
+		{
+			"Back"
+		};
+		attachments[]=
+		{
+			"WalkieTalkie"
+		};
+		itemInfo[]=
+		{
+			"Clothing",
+			"Back"
+		};
+		rotationFlags=16;
+		itemSize[]={4,4};
+		itemsCargoSize[]={6,5};
+		weight=900;
+		varWetMax=1;
+		heatIsolation=0.30000001;
+		visibilityModifier=0.80000001;
+		repairableWithKits[]={5,2};
+		repairCosts[]={30,25};
+		soundAttType="Small";
+		hiddenSelections[]=
+		{
+			"camo"
+		};
+		class ClothingTypes
+		{
+			male="nm_Flagextension\flag\nm_SlingbagDummy_m.p3d";
+			female="nm_Flagextension\flag\nm_SlingbagDummy_f.p3d";
+		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints=100;
+					healthLevels[]=
+					{
+						{1,{""}},
+						{0.69999999,{""}},
+						{0.5,{""}},
+						{0.30000001,{""}},
+						{0,{""}}
+					};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class FragGrenade
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Infected
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Melee
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class pickUpItem_Light
+				{
+					soundSet="pickUpCourierBag_Light_SoundSet";
+					id=796;
+				};
+				class pickUpItem
+				{
+					soundSet="pickUpCourierBag_SoundSet";
+					id=797;
+				};
+				class drop
+				{
+					soundset="taloonbag_drop_SoundSet";
 					id=898;
 				};
 			};

@@ -19,8 +19,8 @@ class CfgMods
 	{
 		dir="nm_Flagextension";
 		name="nm_Flagextension";
-		credits="n3msi";
-		author="n3msi";
+		credits="n3msi & Buddy";
+		author="n3msi & Buddy";
 		authorID="0";
 		version="1.25";
 		extra=0;

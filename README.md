@@ -1,14 +1,13 @@
 TODO:
 must haves:
-- damage system on vanillaflag (done)
-- fix selectionfunctionality on premodinstall-flags (done)
 - fix serverlogerrors (Buddy)
+- slingbag ( needs testing )
+- bandana ( needs testing )
+- rvmats dusk/dawn behavior ( needs testing )
+- weightpainting bandana_f.p3d?
 
 nice-to-haves:
 - redo armbanddummy.p3d
-- fix rvmats dusk/dawn behavior
-- direct attaching of armbanddummy to flagpole
-- slingbag
-- bandana (nemsi)
+- direct attaching of armbanddummy to flagpole ( done )
 - flagepoleitem to find and place
-- mod.cpp and logo.edds
+- mod.cpp

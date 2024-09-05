@@ -7,7 +7,9 @@ must haves:
 - weightpainting bandana_f.p3d?
 
 nice-to-haves:
-- redo armbanddummy.p3d
+- redo armbanddummy.p3d ( n3msi )
+- distance LODs ( n3msi )
+- slingbag + sticks = improvbag ( n3msi )
 - direct attaching of armbanddummy to flagpole ( done )
 - flagepoleitem to find and place
 - mod.cpp

@@ -21,7 +21,7 @@ class Stage1
 };
 class Stage2
 {
-	texture="#(argb,8,8,3)color(1,1,1,0.0,MCA)";
+	texture="#(argb,8,8,3)color(1,1,1,1,AS)";
 	uvSource="tex";
 	class uvTransform
 	{

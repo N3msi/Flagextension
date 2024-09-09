@@ -12,5 +12,7 @@ modded class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new nm_CraftBandanaFlag);
 		RegisterRecipe(new nm_DeCraftSlingbagDummy);
 		RegisterRecipe(new nm_CraftSlingbagDummy);
+		RegisterRecipe(new DeCraftnmImproBag);
+		RegisterRecipe(new CraftnmImproBag);
     }       
 };

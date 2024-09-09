@@ -11,6 +11,8 @@ modded class ModItemRegisterCallbacks
 		pType.AddItemInHandsProfileIK("nm_CraftBandanaRaincoat", "dz/anims/workspaces/player/player_main/player_main_heavy.asi", pBehavior,    "dz/anims/anm/player/ik/heavy/55galDrum.anm"); 
 		pType.AddItemInHandsProfileIK("nm_DeCraftSlingbagDummy", "dz/anims/workspaces/player/player_main/player_main_heavy.asi", pBehavior,    "dz/anims/anm/player/ik/heavy/55galDrum.anm"); 
 		pType.AddItemInHandsProfileIK("nm_CraftSlingbagDummy", "dz/anims/workspaces/player/player_main/player_main_heavy.asi", pBehavior,    "dz/anims/anm/player/ik/heavy/55galDrum.anm"); 
+		pType.AddItemInHandsProfileIK("DeCraftnmImproBag", "dz/anims/workspaces/player/player_main/player_main_heavy.asi", pBehavior,    "dz/anims/anm/player/ik/heavy/55galDrum.anm"); 
+		pType.AddItemInHandsProfileIK("CraftnmImproBag", "dz/anims/workspaces/player/player_main/player_main_heavy.asi", pBehavior,    "dz/anims/anm/player/ik/heavy/55galDrum.anm"); 
 
 	    super.RegisterHeavy(pType, pBehavior);
     }

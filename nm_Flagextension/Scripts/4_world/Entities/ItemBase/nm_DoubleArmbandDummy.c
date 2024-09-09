@@ -47,18 +47,18 @@ class nm_DoubleArmbandDummy extends Clothing
         switch (newLevel)
         {
             case GameConstants.STATE_RUINED:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy_destruct.rvmat"; // Mat ruined
+                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDouble_destruct.rvmat"; // Mat ruined
                 break;
             case GameConstants.STATE_BADLY_DAMAGED:
             case GameConstants.STATE_DAMAGED:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy_damage.rvmat"; // Mat badly damaged/damaged
+                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDouble_damage.rvmat"; // Mat badly damaged/damaged
                 break;
             case GameConstants.STATE_WORN:
             case GameConstants.STATE_PRISTINE:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy.rvmat"; // Mat worn/pristine
+                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDouble.rvmat"; // Mat worn/pristine
                 break;
             default:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy.rvmat"; // Fallback material
+                materialPath = "nm_Flagextension\\flag\\data\\nm_ArmbandDouble.rvmat"; // Fallback material
                 break;
         }
 

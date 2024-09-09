@@ -13,5 +13,6 @@ modded class ModItemRegisterCallbacks
         super.RegisterTwoHanded(pType, pBehavior);
 
         pType.AddItemInHandsProfileIK("nm_SlingbagDummy", "dz/anims/workspaces/player/player_main/weapons/player_main_2h_extinguisher.asi", pBehavior,"dz/anims/anm/player/ik/two_handed/drysackbag.anm");
+        pType.AddItemInHandsProfileIK("nm_ImproBagDummy", "dz/anims/workspaces/player/player_main/weapons/player_main_2h_extinguisher.asi", pBehavior,"dz/anims/anm/player/ik/two_handed/improvised_courier_bag.anm");
     }
 }

@@ -1,45 +1,33 @@
-class nm_SlingbagDummy: Clothing
+class nm_StickflagDummy extends ItemBase
 {
 
 	private string m_nmFlagTexture; // Flag Texture
-    private string m_nmFlagName;
 	private string materialPath;	// Flag Name
 
-	void nm_SlingbagDummy()
+	void nm_StickflagDummy()
 	{
 	}
 	
-	void ~nm_SlingbagDummy()
+	void ~nm_StickflagDummy()
 	{
 	}
 	
 	void SetFlagAttributes(string texturePath, string nmFlagName)
     {
         m_nmFlagTexture = texturePath;
-        m_nmFlagName = nmFlagName;
     }
 
-    void SetnmFlagName(string name)
-    {
-        m_nmFlagName = name;
-    }
-	
-    string GetnmFlagName()
-    {
-        return m_nmFlagName;
-    }
-	
 	string GetnmFlagTexture()
     {
         return m_nmFlagTexture;
     }
 	
-    void SetnmFlagTexture(string texturePath)
+    void SetnmFlagTexture(string texturePath) // sets tex from nmPlaceFlagonGround
     {
         m_nmFlagTexture = texturePath;
         ApplyVisibility(); 
     }
-  
+
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone) 	///bypassing damagesys to apply Material
     {
         super.EEHealthLevelChanged(oldLevel, newLevel, zone);
@@ -47,18 +35,18 @@ class nm_SlingbagDummy: Clothing
         switch (newLevel)
         {
             case GameConstants.STATE_RUINED:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_flag_folded_destruct.rvmat"; // Mat ruined
+                materialPath = "nm_Flagextension\\flag\\data\\nm_stickflag_destruct.rvmat"; // Mat ruined
                 break;
             case GameConstants.STATE_BADLY_DAMAGED:
             case GameConstants.STATE_DAMAGED:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_flag_folded_damage.rvmat"; // Mat badly damaged/damaged
+                materialPath = "nm_Flagextension\\flag\\data\\nm_stickflag_damage.rvmat"; // Mat badly damaged/damaged
                 break;
             case GameConstants.STATE_WORN:
             case GameConstants.STATE_PRISTINE:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_flag_folded.rvmat"; // Mat worn/pristine
+                materialPath = "nm_Flagextension\\flag\\data\\nm_stickflag.rvmat"; // Mat worn/pristine
                 break;
             default:
-                materialPath = "nm_Flagextension\\flag\\data\\nm_flag_folded.rvmat"; // Fallback material
+                materialPath = "nm_Flagextension\\flag\\data\\nm_stickflag.rvmat"; // Fallback material
                 break;
         }
 
@@ -93,7 +81,6 @@ class nm_SlingbagDummy: Clothing
     {
         super.OnStoreSave(ctx);
         ctx.Write(m_nmFlagTexture); // Save Flag Tex
-		ctx.Write(m_nmFlagName); // Save Flag Tex
     }
 
     override bool OnStoreLoad(ParamsReadContext ctx, int version)
@@ -103,10 +90,7 @@ class nm_SlingbagDummy: Clothing
 
         if (!ctx.Read(m_nmFlagTexture))
             return false;
-		
-        if (!ctx.Read(m_nmFlagName)) // load Flag Name
-            return false;
-		
+				
         return true;
     }
 
@@ -115,4 +99,20 @@ class nm_SlingbagDummy: Clothing
         super.AfterStoreLoad();
         ApplyVisibility();
     }
-};
+
+	override bool IsHologram()
+	{
+		return true;
+	}
+	
+	override bool CanPutInCargo( EntityAI parent )
+    {
+        return false;
+    }
+ 
+	override bool CanPutIntoHands( EntityAI parent )
+	{
+		return false;
+	}
+
+}

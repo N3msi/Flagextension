@@ -13,7 +13,7 @@ class nm_ArmbandDummy extends Clothing
     {
 		SetObjectTexture(2, m_nmFlagTexture); // Apply tex on _g permanently
 		SetObjectMaterial(2, materialPathGround); // show mats on _g ( better safe then sorry )
-		ApplyVisibility()
+		ApplyVisibility();
     }
 	
 	void ~nm_ArmbandDummy()
@@ -46,13 +46,13 @@ class nm_ArmbandDummy extends Clothing
         m_nmFlagTexture = texturePath;
     }
 	
-	// void Synchronize()
-	// {
-		// if ( GetGame().IsServer() )
-		// {
-			// SetSynchDirty();
-		// }
-	// }
+	void Synchronize()
+	{
+		if ( GetGame().IsServer() )
+		{
+			SetSynchDirty();
+		}
+	}
 	
 	override void OnVariablesSynchronized()
 	{
@@ -68,24 +68,24 @@ class nm_ArmbandDummy extends Clothing
         {
             case GameConstants.STATE_RUINED:
                 materialPathCape = "nm_Flagextension\\flag\\data\\nm_flag_cape_destruct.rvmat"; // Mat ruined
-                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy_destruct.rvmat"; // Mat ruined
+                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandBig_destruct.rvmat"; // Mat ruined
                 materialPathGround = "nm_Flagextension\\flag\\data\\nm_Flag_folded_destruct.rvmat"; // Mat ruined
                 break;
             case GameConstants.STATE_BADLY_DAMAGED:
             case GameConstants.STATE_DAMAGED:
                 materialPathCape = "nm_Flagextension\\flag\\data\\nm_flag_cape_damage.rvmat"; // Mat badly damaged/damaged
-                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy_damage.rvmat"; // Mat badly damaged/damaged
+                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandBig_damage.rvmat"; // Mat badly damaged/damaged
                 materialPathGround = "nm_Flagextension\\flag\\data\\nm_Flag_folded_damage.rvmat"; // Mat badly damaged/damaged
                 break;
             case GameConstants.STATE_WORN:
             case GameConstants.STATE_PRISTINE:
                 materialPathCape = "nm_Flagextension\\flag\\data\\nm_flag_cape.rvmat"; // Mat worn/pristine
-                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy.rvmat"; // Mat worn/pristine
+                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandBig.rvmat"; // Mat worn/pristine
                 materialPathGround = "nm_Flagextension\\flag\\data\\nm_Flag_folded.rvmat"; // Mat worn/pristine
                 break;
             default:
                 materialPathCape = "nm_Flagextension\\flag\\data\\nm_flag_cape.rvmat"; // Fallback material
-                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandDummy.rvmat"; // Fallback material
+                materialPathAB = "nm_Flagextension\\flag\\data\\nm_ArmbandBig.rvmat"; // Fallback material
                 materialPathGround = "nm_Flagextension\\flag\\data\\nm_Flag_folded.rvmat"; // Fallback material
                 break;
         }
@@ -168,98 +168,50 @@ class nm_ArmbandDummy extends Clothing
         ApplyVisibility();
 	}
 
-	// void ApplyTexture()
-	// {
-		
-		// EntityAI parent;
-		
-		// int slot_id;
-		
-		// if (GetGame().IsServer()) // on server for sync
-		// {
-			// PlayerBase player = PlayerBase.Cast(parent.GetHierarchyRootPlayer());
-			// if (player)
-			// {
+	void ApplyTexture(EntityAI parent, int slot_id)
+	{
+		if (GetGame().IsServer()) // on server for sync
+		{
+			PlayerBase player = PlayerBase.Cast(parent.GetHierarchyRootPlayer());
+			if (player)
+			{
 				// Check for slot
-				// EntityAI armband = player.FindAttachmentBySlotName("Armband");
-				// EntityAI backAttachment = player.FindAttachmentBySlotName("Back");
+				EntityAI armband = player.FindAttachmentBySlotName("Armband");
+				EntityAI backAttachment = player.FindAttachmentBySlotName("Back");
 
-				// if (armband == this)
-				// {
-					// m_IsCapeVisible = false;
-					// m_IsArmbandVisible = true;
-					// SetObjectTexture(0, m_nmFlagTexture); // show texture on armband
-					// SetObjectMaterial(0, materialPathAB); // show mats on armband
-					// SetObjectTexture(1, ""); // hide texture on cape
-					// SetObjectMaterial(1, ""); // hide mats on cape
-					// SetObjectTexture(2, m_nmFlagTexture); // apply on _g ( better safe then sorry )
-					// SetObjectMaterial(2, materialPathGround); // show mats on _g ( better safe then sorry )
-				// }
-				// else if (backAttachment == this)
-				// {
-					// m_IsCapeVisible = true;
-					// m_IsArmbandVisible = false;
-					// SetObjectTexture(1, m_nmFlagTexture); // Show texture on cape
-					// SetObjectMaterial(1, materialPathCape); // show mats on cape
-					// SetObjectTexture(0, ""); // hide texture on armband
-					// SetObjectMaterial(0, ""); // hide mats on armband
-					// SetObjectTexture(2, m_nmFlagTexture); // apply on _g ( better safe then sorry )
-					// SetObjectMaterial(2, materialPathGround); // show mats on _g ( better safe then sorry )
-				// }
-			// }
-		// }
-	// }
+				if (armband == this)
+				{
+					m_IsCapeVisible = false;
+					m_IsArmbandVisible = true;
+					SetObjectTexture(0, m_nmFlagTexture); // show texture on armband
+					SetObjectMaterial(0, materialPathAB); // show mats on armband
+					SetObjectTexture(1, ""); // hide texture on cape
+					SetObjectMaterial(1, ""); // hide mats on cape
+					SetObjectTexture(2, m_nmFlagTexture); // apply on _g ( better safe then sorry )
+					SetObjectMaterial(2, materialPathGround); // show mats on _g ( better safe then sorry )
+				}
+				else if (backAttachment == this)
+				{
+					m_IsCapeVisible = true;
+					m_IsArmbandVisible = false;
+					SetObjectTexture(1, m_nmFlagTexture); // Show texture on cape
+					SetObjectMaterial(1, materialPathCape); // show mats on cape
+					SetObjectTexture(0, ""); // hide texture on armband
+					SetObjectMaterial(0, ""); // hide mats on armband
+					SetObjectTexture(2, m_nmFlagTexture); // apply on _g ( better safe then sorry )
+					SetObjectMaterial(2, materialPathGround); // show mats on _g ( better safe then sorry )
+				}
+			}
+		}
+	}
 	
 	override void OnWasAttached(EntityAI parent, int slot_id)
 	{
 		super.OnWasAttached(parent, slot_id);
 		m_lastAttachedSlot = slot_id; // store last attachment slot
-		
-		PlayerBase m_Player;
-		
-		Class.CastTo(m_Player, parent.GetHierarchyRootPlayer());
-		
-		EntityAI armband = m_Player.FindAttachmentBySlotName("Armband");
-		EntityAI backAttachment = m_Player.FindAttachmentBySlotName("Back");		
-		
-		if ((!GetGame().IsDedicatedServer()) && m_Player && m_Player.IsControlledPlayer())
-		{
-			if (armband == this)
-			{
-				m_IsCapeVisible = false;
-				m_IsArmbandVisible = true;
-				SetObjectTexture(0, m_nmFlagTexture); // show texture on armband
-				SetObjectMaterial(0, materialPathAB); // show mats on armband
-				SetObjectTexture(1, ""); // hide texture on cape
-				SetObjectMaterial(1, ""); // hide mats on cape
-				SetObjectTexture(2, m_nmFlagTexture); // apply on _g ( better safe then sorry )
-				SetObjectMaterial(2, materialPathGround); // show mats on _g ( better safe then sorry )	
-				Print("arm");		
-			}
-			else if (backAttachment == this)
-			{
-				m_IsCapeVisible = true;
-				m_IsArmbandVisible = false;
-				SetObjectTexture(1, m_nmFlagTexture); // Show texture on cape
-				SetObjectMaterial(1, materialPathCape); // show mats on cape
-				SetObjectTexture(0, ""); // hide texture on armband
-				SetObjectMaterial(0, ""); // hide mats on armband
-				SetObjectTexture(2, m_nmFlagTexture); // apply on _g ( better safe then sorry )
-				SetObjectMaterial(2, materialPathGround); // show mats on _g ( better safe then sorry )
-				Print("back");	
-			
-			}			
 
-		}
-
-		if ( GetGame().IsServer() )
-		{
-			SetSynchDirty();
-			Print("syncd");
-		}		
-		
-		// GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ApplyTexture, 50, false, this);
-		// GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Synchronize, 60, false);
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ApplyTexture, 50, false, this, m_lastAttachedSlot);
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Synchronize, 60, false);
 	}
 
 	

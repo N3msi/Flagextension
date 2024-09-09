@@ -1,15 +1,14 @@
-class nm_SlingbagDummy: Clothing
+class nm_ImproBagDummy extends Clothing
 {
-
 	private string m_nmFlagTexture; // Flag Texture
     private string m_nmFlagName;
 	private string materialPath;	// Flag Name
 
-	void nm_SlingbagDummy()
+	void nm_ImproBagDummy()
 	{
 	}
 	
-	void ~nm_SlingbagDummy()
+	void ~nm_ImproBagDummy()
 	{
 	}
 	

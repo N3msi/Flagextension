@@ -1,11 +1,11 @@
-class nm_CraftSlingbagDummy extends RecipeBase
-{
+class DeCraftnmImproBag extends RecipeBase
+{	
 	override void Init()
 	{
-		m_Name = "#STR_nmCraftSlingbagDummy";
+		m_Name = "#STR_breakdown0";
 		m_IsInstaRecipe = false;//should this recipe be performed instantly without animation
-		m_AnimationLength = 1.5;//animation length in relative time units
-		m_Specialty = -0.02;// value > 0 for roughness, value < 0 for precision
+		m_AnimationLength = 1;//animation length in relative time units
+		m_Specialty = 0.02;// value > 0 for roughness, value < 0 for precision
 		
 		
 		//conditions
@@ -24,8 +24,7 @@ class nm_CraftSlingbagDummy extends RecipeBase
 		
 		//INGREDIENTS
 		//ingredient 1
-		InsertIngredient(0,"Flag_Base");//you can insert multiple ingredients this way
-		InsertIngredient(0,"nm_ArmbandDummy");//you can insert multiple ingredients this way
+		InsertIngredient(0,"nm_ImproBagDummy");//you can insert multiple ingredients this way
 		
 		m_IngredientAddHealth[0] = 0;// 0 = do nothing
 		m_IngredientSetHealth[0] = -1; // -1 = do nothing
@@ -34,71 +33,81 @@ class nm_CraftSlingbagDummy extends RecipeBase
 		m_IngredientUseSoftSkills[0] = false;// set 'true' to allow modification of the values by softskills on this ingredient
 		
 		//ingredient 2
-		InsertIngredient(1,"Rope");//you can insert multiple ingredients this way
-		//InsertIngredient(1,"ImprovisedRope");//you can insert multiple ingredients this way
+		InsertIngredient(1,"Sickle");//you can insert multiple ingredients this way
+		InsertIngredient(1,"KukriKnife");
+		InsertIngredient(1,"FangeKnife");
+		InsertIngredient(1,"Hacksaw");
+		InsertIngredient(1,"HandSaw");
+		InsertIngredient(1,"KitchenKnife");
+		InsertIngredient(1,"SteakKnife");
+		InsertIngredient(1,"HayHook");
+		InsertIngredient(1,"StoneKnife");
+		InsertIngredient(1,"Cleaver");
+		InsertIngredient(1,"CombatKnife");
+		InsertIngredient(1,"HuntingKnife");
+		InsertIngredient(1,"Machete");
+		InsertIngredient(1,"CrudeMachete");
+		InsertIngredient(1,"OrientalMachete");
+		InsertIngredient(1,"Screwdriver");
+		InsertIngredient(1,"Crowbar");
+		InsertIngredient(1,"Pickaxe");
+		InsertIngredient(1,"WoodAxe");
+		InsertIngredient(1,"Hatchet");
+		InsertIngredient(1,"FirefighterAxe");
+		InsertIngredient(1,"Sword");
+		InsertIngredient(1,"AK_Bayonet");
+		InsertIngredient(1,"M9A1_Bayonet");
+		InsertIngredient(1,"Mosin_Bayonet");
+		InsertIngredient(1,"SKS_Bayonet");	
+		InsertIngredient(1,"BoneKnife");
 		
-		m_IngredientAddHealth[1] = 0;// 0 = do nothing
+		m_IngredientAddHealth[1] = -5;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[1] = 0;// 0 = do nothing
-		m_IngredientDestroy[1] = true;// false = do nothing
-		m_IngredientUseSoftSkills[1] = false;// set 'true' to allow modification of the values by softskills on this ingredient
+		m_IngredientDestroy[1] = false;// false = do nothing
+		m_IngredientUseSoftSkills[1] = true;// set 'true' to allow modification of the values by softskills on this ingredient
+		
 		//----------------------------------------------------------------------------------------------------------------------
 		
 		//result1
-		AddResult("nm_SlingbagDummy");//add results here
+		AddResult("WoodenStick");//add results here
 
 		m_ResultSetFullQuantity[0] = false;//true = set full quantity, false = do nothing
-		m_ResultSetQuantity[0] = -1;//-1 = do nothing
-		m_ResultSetHealth[0] = 0;//-1 = do nothing
+		m_ResultSetQuantity[0] = 3;//-1 = do nothing
+		m_ResultSetHealth[0] = -1;//-1 = do nothing
 		m_ResultInheritsHealth[0] = 0;// (value) == -1 means do nothing; a (value) >= 0 means this result will inherit health from ingredient number (value);(value) == -2 means this result will inherit health from all ingredients averaged(result_health = combined_health_of_ingredients / number_of_ingredients)
 		m_ResultInheritsColor[0] = -1;// (value) == -1 means do nothing; a (value) >= 0 means this result classname will be a composite of the name provided in AddResult method and config value "color" of ingredient (value)
 		m_ResultToInventory[0] = -2;//(value) == -2 spawn result on the ground;(value) == -1 place anywhere in the players inventory, (value) >= 0 means switch position with ingredient number(value)
 		m_ResultUseSoftSkills[0] = false;// set 'true' to allow modification of the values by softskills on this result
 		m_ResultReplacesIngredient[0] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
+		
 	}
 
 	override bool CanDo(ItemBase ingredients[], PlayerBase player)//final check for recipe's validity
 	{
-		return true;
+		return ingredients[0].IsEmpty();
 	}
 
-	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
+	override void Do(ItemBase ingredients[], PlayerBase player, array<ItemBase> results, float specialty_weight)
 	{
-		ItemBase ingredient0 = ingredients[0];
-		string nmFlagTexture = "";
-		string nmFlagName = "";
+		Debug.Log("Recipe Do method called", "recipes");
 
-		if (ingredient0.IsInherited(Flag_Base))
-		{
-			// if Flag_Base get tex from GetHiddenSelectionsTextures
-			Flag_Base Flag = Flag_Base.Cast(ingredient0);
-			if (Flag)
-			{
-				nmFlagTexture = Flag.GetHiddenSelectionsTextures()[0]; 
-				nmFlagName = Flag.GetType();
-			}
-		}
-		else if (ingredient0.IsInherited(nm_ArmbandDummy))
-		{
-			// if nm_ArmbandDummy get tex from GetnmFlagTexture
-			nm_ArmbandDummy armbandDummy = nm_ArmbandDummy.Cast(ingredient0);
-			if (armbandDummy)
-			{
-				nmFlagTexture = armbandDummy.GetnmFlagTexture();
-				nmFlagName = armbandDummy.GetnmFlagName();
-			}
-		}
+		nm_ImproBagDummy improbag = nm_ImproBagDummy.Cast(ingredients[0]);
 
-		// transfer nmFlagTexture to armbands
-		for (int i = 0; i < results.Count(); i++)
+		if (improbag)
 		{
-			ItemBase bag = results[i];
-			bag.SetObjectTexture(0, nmFlagTexture);
-			nm_SlingbagDummy SlingbagResult = nm_SlingbagDummy.Cast(bag);
-			if (SlingbagResult)
+			string nmflagName = improbag.GetnmFlagName();
+
+			if (nmflagName != "")
 			{
-				SlingbagResult.SetnmFlagTexture(nmFlagTexture);
-				SlingbagResult.SetnmFlagName(nmFlagName);
+				ItemBase flag = ItemBase.Cast(player.SpawnEntityOnGroundPos(nmflagName, player.GetPosition()));
+
+				if (flag)
+				{
+					float ImprobagHealth = ingredients[0].GetHealth();
+
+					flag.SetHealth(ImprobagHealth);
+				}
 			}
 		}
 	}

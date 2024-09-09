@@ -3,13 +3,12 @@ must haves:
 - fix serverlogerrors (Buddy)
 - slingbag ( needs testing )
 - bandana ( needs testing )
+- improvbag ( needs testing )
 - rvmats dusk/dawn behavior ( needs testing )
 - weightpainting bandana_f.p3d? -> done (Buddy)
 
 nice-to-haves:
-- redo armbanddummy.p3d ( n3msi )
-- distance LODs ( n3msi )
-- slingbag + sticks = improvbag ( n3msi )
-- direct attaching of armbanddummy to flagpole ( done )
+- distance LODs ( bandana )
+- Flag on LongWoodenStick ( n3msi )
 - flagepoleitem to find and place
 - mod.cpp

@@ -4,7 +4,7 @@ must haves:
 - slingbag ( needs testing )
 - bandana ( needs testing )
 - rvmats dusk/dawn behavior ( needs testing )
-- weightpainting bandana_f.p3d?
+- weightpainting bandana_f.p3d? -> done (Buddy)
 
 nice-to-haves:
 - redo armbanddummy.p3d ( n3msi )

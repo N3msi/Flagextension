@@ -1,6 +1,6 @@
 modded class CarScript
 {
-	private Object m_ItemDuplicate;
+	private nm_CarflagDummy m_ItemDuplicate;
 	
 	void CarScript()
     {   
@@ -17,7 +17,7 @@ modded class CarScript
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
 			// Check for Material_FPole_Flag slot
-			if (slot_name == "Material_FPole_Flag")
+			if (slot_name == "Material_FPole_Flag" && Flag_Base.Cast(item))
 			{
 				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
 			}
@@ -30,33 +30,35 @@ modded class CarScript
 		{
 			ItemBase attachedItem = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag")); 
 			
-			m_ItemDuplicate = GetGame().CreateObject("nm_CarflagDummy", vector.Zero);
+			m_ItemDuplicate = nm_CarflagDummy.Cast(GetGame().CreateObject("nm_CarflagDummy", vector.Zero));
 			
-			m_ItemDuplicate.SetOrientation("0 0 0");
-			m_ItemDuplicate.SetPosition("0 0 0");
-
-			ItemBase itemBaseDuplicate = ItemBase.Cast(m_ItemDuplicate);
-			if (itemBaseDuplicate && attachedItem)
+			if (m_ItemDuplicate) 
 			{
-				SetDuplicateProperties(itemBaseDuplicate, attachedItem);
-			}
+				m_ItemDuplicate.SetOrientation("0 0 0");
+				m_ItemDuplicate.SetPosition("0 0 0");
 
-			this.AddChild(m_ItemDuplicate, -1, false);
-			m_ItemDuplicate.Update();
+				if (attachedItem)
+				{
+					SetDuplicateProperties(m_ItemDuplicate, ItemBase.Cast(attachedItem));
+				}
+
+				this.AddChild(m_ItemDuplicate, -1, false);
+				m_ItemDuplicate.Update();
+			}
 		}
 	}
 		
-    void SetDuplicateProperties(nm_StickflagDummy FlagBaseDuplicate, Flag_Base attachedFlag)
+    void SetDuplicateProperties(nm_CarflagDummy itemBaseDuplicate, ItemBase attachedFlag)
     {
-		if (FlagBaseDuplicate)
+		if (itemBaseDuplicate)
 		{
 			string nmFlagTexture = "";
 			nmFlagTexture = attachedFlag.GetHiddenSelectionsTextures()[0];
 			
-			FlagBaseDuplicate.SetnmFlagTexture(nmFlagTexture);
+			itemBaseDuplicate.SetnmFlagTexture(nmFlagTexture);
 			
 			float attachedFlagHealth = attachedFlag.GetHealth("", ""); // get health
-			FlagBaseDuplicate.SetHealth("", "", attachedFlagHealth); // set health
+			itemBaseDuplicate.SetHealth("", "", attachedFlagHealth); // set health
 		}
     }
 	
@@ -92,16 +94,16 @@ modded class CarScript
 		// Update health of duplicated item if it exists
 		if (m_ItemDuplicate)
 		{
-			nm_StickflagDummy FlagBaseDuplicate = nm_StickflagDummy.Cast(m_ItemDuplicate);
-			if (FlagBaseDuplicate)
+			nm_CarflagDummy itemBaseDuplicate = nm_CarflagDummy.Cast(m_ItemDuplicate);
+			if (itemBaseDuplicate)
 			{
 				// set duplicated items health based (percentage)
-				FlagBaseDuplicate.SetHealth("", "", maxHealth * (healthPercentage / 100));
+				itemBaseDuplicate.SetHealth("", "", maxHealth * (healthPercentage / 100));
 			}
 		}
 
 		// update health of attached flag (percentage)
-		Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
+		ItemBase attachedFlag = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
 		if (attachedFlag)
 		{
 			attachedFlag.SetHealth("", "", maxHealth * (healthPercentage / 100));

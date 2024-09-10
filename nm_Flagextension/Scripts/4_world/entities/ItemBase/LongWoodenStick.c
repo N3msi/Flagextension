@@ -25,11 +25,15 @@ modded class LongWoodenStick
 
    override void EEItemAttached(EntityAI item, string slot_name)
     {
-        super.EEItemAttached(item, slot_name);
+		super.EEItemAttached(item, slot_name);
 
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
-			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
+			// Check for Material_FPole_Flag slot
+			if (slot_name == "Material_FPole_Flag" && Flag_Base.Cast(item))
+			{
+				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
+			}
 		}
 	}
 
@@ -118,9 +122,13 @@ modded class LongWoodenStick
 	
 	override void EEItemDetached(EntityAI item, string slot_name)
     {
-        super.EEItemDetached(item, slot_name);
+		super.EEItemDetached(item, slot_name);
 
-		DeleteDuplicatedItem()
+		// Check for Material_FPole_Flag slot
+		if (slot_name == "Material_FPole_Flag")
+		{
+			DeleteDuplicatedItem();  // if flag delete duplicate
+		}
     }
 
 	void DeleteDuplicatedItem()

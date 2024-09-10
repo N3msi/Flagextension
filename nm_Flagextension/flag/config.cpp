@@ -12,7 +12,8 @@ class CfgPatches
 			"DZ_Characters",
 			"DZ_Gear_Camping",
 			"DZ_Characters_Tops",
-			"DZ_Gear_Crafting"
+			"DZ_Gear_Crafting",
+			"DZ_Vehicles_Wheeled"
 		};
 	};
 };
@@ -708,26 +709,261 @@ class cfgVehicles
 		{
 			"Material_FPole_Flag"
 		};
-		/*class InventorySlotsOffsets //does not affect the Child
-		{
-			class Shoulder
-			{
-				position[]={0,0,0};
-				orientation[]={0,180,0};  // Flips the item upside down
-			};
-			class Melee
-			{
-				position[]={0,0,0};
-				orientation[]={0,180,0};  // Flips the item upside down
-			};
-		};*/
 	};
 	class nm_StickflagDummy: Inventory_Base
 	{
 		scope = 1;
-		displayName="$STR_CfgVehicles_Flag_Base0";
-		descriptionShort="$STR_CfgVehicles_Flag_Base1";
+		displayName="nemsi <3 buddy";
 		model="nm_Flagextension\flag\nm_StickflagDummy.p3d";
+		overrideDrawArea="8.0";
+		forceFarBubble="true";
+		slopeTolerance=0.2;
+		yawPitchRollLimit[]={45,45,45};
+		carveNavmesh=1;
+		canBeDigged=0;
+		heavyItem=1;
+		weight=10000;
+		itemSize[]={2,2};
+		repairableWithKits[]={};
+		repairCosts[]={};
+		itemBehaviour=0;
+		absorbency=0.1;
+		hiddenSelections[]=
+		{
+			"camo"
+		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints=100;
+					healthLevels[]=
+					{
+						{1,{""}},
+						{0.69999999,{""}},
+						{0.5,{""}},
+						{0.30000001,{""}},
+						{0,{""}}
+					};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class FragGrenade
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Infected
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Melee
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+			};
+		};
+	};
+	class CarScript;
+	class OffroadHatchback: CarScript
+	{
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		class DamageSystem
+		{
+			class DamageZones
+			{
+				class Back
+				{
+					inventorySlots[]+=
+					{
+						"Material_FPole_Flag"
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Body
+			{
+				attachmentSlots[]+=
+				{
+					"Material_FPole_Flag"
+				};
+			};
+		};		
+	};
+	class CivilianSedan: CarScript
+	{
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		class DamageSystem
+		{
+			class DamageZones
+			{
+				class Back
+				{
+					inventorySlots[]+=
+					{
+						"Material_FPole_Flag"
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Body
+			{
+				attachmentSlots[]+=
+				{
+					"Material_FPole_Flag"
+				};
+			};
+		};		
+	};
+	class Hatchback_02: CarScript
+	{
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		class DamageSystem
+		{
+			class DamageZones
+			{
+				class Back
+				{
+					inventorySlots[]+=
+					{
+						"Material_FPole_Flag"
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Body
+			{
+				attachmentSlots[]+=
+				{
+					"Material_FPole_Flag"
+				};
+			};
+		};		
+	};
+	class Sedan_02: CarScript
+	{
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		class DamageSystem
+		{
+			class DamageZones
+			{
+				class Back
+				{
+					inventorySlots[]+=
+					{
+						"Material_FPole_Flag"
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Body
+			{
+				attachmentSlots[]+=
+				{
+					"Material_FPole_Flag"
+				};
+			};
+		};		
+	};
+	class Truck_01_Base: CarScript
+	{
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		class DamageSystem
+		{
+			class DamageZones
+			{
+				class Back
+				{
+					inventorySlots[]+=
+					{
+						"Material_FPole_Flag"
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Body
+			{
+				attachmentSlots[]+=
+				{
+					"Material_FPole_Flag"
+				};
+			};
+		};		
+	};
+	class Offroad_02: CarScript
+	{
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		class DamageSystem
+		{
+			class DamageZones
+			{
+				class Back
+				{
+					inventorySlots[]+=
+					{
+						"Material_FPole_Flag"
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Body
+			{
+				attachmentSlots[]+=
+				{
+					"Material_FPole_Flag"
+				};
+			};
+		};		
+	};
+	class nm_CarflagDummy: Inventory_Base
+	{
+		scope = 1;
+		displayName="nemsi <3 buddy";
+		model="nm_Flagextension\flag\nm_CarflagDummy.p3d";
 		overrideDrawArea="8.0";
 		forceFarBubble="true";
 		slopeTolerance=0.2;

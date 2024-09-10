@@ -8,8 +8,7 @@ class CfgPatches
 		requiredAddons[]=
 		{
 			"DZ_Data",
-			"DZ_Scripts",
-			"DZ_Gear_Camping"
+			"DZ_Scripts"
 		};
 	};
 };

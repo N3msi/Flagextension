@@ -1,10 +1,10 @@
 TODO:
 must haves:
 - fix serverlogerrors (Buddy)
-- rvmats dusk/dawn behavior ( needs testing )
-- flag on woodenStick ( needs testing )
-- flag on Cars ( needs testing )
-- test synchronicity on multiple players
+- testing rvmats dusk/dawn behavior
+- testing flag on woodenStick
+- testing flag on Cars
+- testing synchronicity on multiple players
 
 nice-to-haves:
 - flagepoleitem to find and place

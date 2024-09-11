@@ -712,21 +712,10 @@ class cfgVehicles
 	};
 	class nm_StickflagDummy: Inventory_Base
 	{
-		scope = 1;
-		displayName="nemsi <3 buddy";
+		scope=1;
+		displayName="";
 		model="nm_Flagextension\flag\nm_StickflagDummy.p3d";
-		overrideDrawArea="8.0";
-		forceFarBubble="true";
-		slopeTolerance=0.2;
-		yawPitchRollLimit[]={45,45,45};
-		carveNavmesh=1;
-		canBeDigged=0;
-		heavyItem=1;
 		weight=10000;
-		itemSize[]={2,2};
-		repairableWithKits[]={};
-		repairCosts[]={};
-		itemBehaviour=0;
 		absorbency=0.1;
 		hiddenSelections[]=
 		{
@@ -749,36 +738,9 @@ class cfgVehicles
 					};
 				};
 			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
-				};
-				class FragGrenade
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
-				};
-				class Infected
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
-				};
-				class Melee
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
-				};
-			};
 		};
 	};
-	class CarScript;
+	class CarScript;		///Note: To make custom cars compatible, just add the "Material_FPole_Flag" - Slot to theire config.No scripting needed as long as they inherit from CarScript
 	class OffroadHatchback: CarScript
 	{
 		attachments[]+=
@@ -961,22 +923,10 @@ class cfgVehicles
 	};
 	class nm_CarflagDummy: Inventory_Base
 	{
-		scope = 1;
-		displayName="nemsi <3 buddy";
+		scope=1;
+		displayName="";
 		model="nm_Flagextension\flag\nm_CarflagDummy.p3d";
-		overrideDrawArea="8.0";
-		forceFarBubble="true";
-		slopeTolerance=0.2;
-		yawPitchRollLimit[]={45,45,45};
-		carveNavmesh=1;
-		canBeDigged=0;
-		heavyItem=1;
 		weight=10000;
-		itemSize[]={2,2};
-		repairableWithKits[]={};
-		repairCosts[]={};
-		itemBehaviour=0;
-		absorbency=0.1;
 		hiddenSelections[]=
 		{
 			"camo"
@@ -996,33 +946,6 @@ class cfgVehicles
 						{0.30000001,{""}},
 						{0,{""}}
 					};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
-				};
-				class FragGrenade
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
-				};
-				class Infected
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
-				};
-				class Melee
-				{
-					class Health{damage=0.94999999;};
-					class Blood{damage=1;};
-					class Shock{damage=1;};
 				};
 			};
 		};

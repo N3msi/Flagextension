@@ -1,6 +1,6 @@
 modded class LongWoodenStick
 {
-	private Object m_ItemDuplicate;
+	private nm_StickflagDummy m_ItemDuplicate;
 	private vector nmDefaultPosition = "0 0 0"; // default position
 	private vector nmDefaultOrientation = "0 0 0"; // default orientation
 	private vector nmBackPosition = "0 0.3 0"; // position on back
@@ -13,6 +13,31 @@ modded class LongWoodenStick
 	void ~LongWoodenStick()
     {
 	}
+
+	override void OnStoreSave(ParamsWriteContext ctx)
+    {
+        super.OnStoreSave(ctx);
+        ctx.Write(m_ItemDuplicate); // Save nm_CarflagDummy
+    }
+
+    override bool OnStoreLoad(ParamsReadContext ctx, int version)
+    {
+        if (!super.OnStoreLoad(ctx, version))
+            return false;
+
+        if (!ctx.Read(m_ItemDuplicate))
+            return false;
+				
+        return true;
+    }
+
+    override void AfterStoreLoad()
+    {
+		super.AfterStoreLoad();
+		
+		DeleteOldFlag()		
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
+    }
 	
     override void SetActions()
     {
@@ -37,6 +62,25 @@ modded class LongWoodenStick
 		}
 	}
 
+	void DeleteOldFlag() // To delete unattached Dummy after restart, otherwise floating in air
+	{
+		float radius = 0.5;
+
+		vector carPosition = GetPosition();
+
+		array<Object> objectsInRange = new array<Object>;
+
+		GetGame().GetObjectsAtPosition(carPosition, radius, objectsInRange, null);
+
+		foreach (Object obj : objectsInRange)
+		{
+			if (obj.IsInherited(nm_StickflagDummy))
+			{
+				GetGame().ObjectDelete(obj);
+			}
+		}
+	}
+	
 	void AddChildFlag()
 	{
 		if (GetGame().IsServer() && !GetGame().IsClient())
@@ -49,28 +93,31 @@ modded class LongWoodenStick
 
 			PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
 
-			if (player)
+			if (attachedFlag) // null check
 			{
-				EntityAI slot1Item = player.FindAttachmentBySlotName("Melee");
-				EntityAI slot2Item = player.FindAttachmentBySlotName("Shoulder");
-				if (slot1Item == this || slot2Item == this)
+				if (player)
 				{
-					// stick is in melee or shoulder slot
-					m_ItemDuplicate.SetPosition(nmBackPosition);
-					m_ItemDuplicate.SetOrientation(nmBackOrientation);
-				}	
-				else 
-				{ // stick isnt in melee or shoulder slot
+					EntityAI slot1Item = player.FindAttachmentBySlotName("Melee");
+					EntityAI slot2Item = player.FindAttachmentBySlotName("Shoulder");
+					if (slot1Item == this || slot2Item == this)
+					{
+						// stick is in melee or shoulder slot
+						m_ItemDuplicate.SetPosition(nmBackPosition);
+						m_ItemDuplicate.SetOrientation(nmBackOrientation);
+					}	
+					else 
+					{ // stick isnt in melee or shoulder slot
+						m_ItemDuplicate.SetPosition(nmDefaultPosition);
+						m_ItemDuplicate.SetOrientation(nmDefaultOrientation);
+					}
+				} // stick is not in player
+				else
+				{
 					m_ItemDuplicate.SetPosition(nmDefaultPosition);
 					m_ItemDuplicate.SetOrientation(nmDefaultOrientation);
 				}
-			} // stick is not in player
-			else
-			{
-				m_ItemDuplicate.SetPosition(nmDefaultPosition);
-				m_ItemDuplicate.SetOrientation(nmDefaultOrientation);
 			}
-
+			
 			nm_StickflagDummy FlagBaseDuplicate = nm_StickflagDummy.Cast(m_ItemDuplicate);
 			if (FlagBaseDuplicate)
 			{
@@ -78,6 +125,7 @@ modded class LongWoodenStick
 
 				this.AddChild(m_ItemDuplicate, -1, false);
 				m_ItemDuplicate.Update();
+				m_ItemDuplicate.SetSynchDirty();
 			}
 		}
 	}
@@ -124,11 +172,7 @@ modded class LongWoodenStick
     {
 		super.EEItemDetached(item, slot_name);
 
-		// Check for Material_FPole_Flag slot
-		if (slot_name == "Material_FPole_Flag")
-		{
-			DeleteDuplicatedItem();  // if flag delete duplicate
-		}
+		DeleteOldFlag()
     }
 
 	void DeleteDuplicatedItem()
@@ -144,23 +188,23 @@ modded class LongWoodenStick
 	{
 		super.EEHealthLevelChanged(oldLevel, newLevel, zone);
 
-		// Calculate health percentage
+		// calculate health percentage
 		float maxHealth = GetMaxHealth("", "");
 		float currentHealth = GetHealth("", "");
 		float healthPercentage = (currentHealth / maxHealth) * 100;
 
-		// Update the health of the duplicated item if it exists
+		// Update health of duplicate
 		if (m_ItemDuplicate)
 		{
 			nm_StickflagDummy FlagBaseDuplicate = nm_StickflagDummy.Cast(m_ItemDuplicate);
 			if (FlagBaseDuplicate)
 			{
-				// Set the duplicated item's health based on the percentage
+				// Set duplicate health
 				FlagBaseDuplicate.SetHealth("", "", maxHealth * (healthPercentage / 100));
 			}
 		}
 
-		// Update the health of the attached flag
+		// Update health attached flag
 		Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
 		if (attachedFlag)
 		{

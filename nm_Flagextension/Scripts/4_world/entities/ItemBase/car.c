@@ -1,14 +1,31 @@
-modded class CarScript
+modded class CarScript ///Note: To make custom cars compatible, just add the "Material_FPole_Flag" - Slot to theire config.No scripting needed as long as they inherit from CarScript
 {
 	private nm_CarflagDummy m_ItemDuplicate;
-	
-	void CarScript()
-    {   
-	}
 
-	void ~CarScript()
+    override void OnStoreSave(ParamsWriteContext ctx)
     {
-	}
+        super.OnStoreSave(ctx);
+        ctx.Write(m_ItemDuplicate); // Save nm_CarflagDummy
+    }
+
+    override bool OnStoreLoad(ParamsReadContext ctx, int version)
+    {
+        if (!super.OnStoreLoad(ctx, version))
+            return false;
+
+        if (!ctx.Read(m_ItemDuplicate))
+            return false;
+				
+        return true;
+    }
+
+    override void AfterStoreLoad()
+    {
+		super.AfterStoreLoad();
+		
+		DeleteOldFlag()		
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
+    }
 	
 	override void EEItemAttached(EntityAI item, string slot_name)
 	{
@@ -23,27 +40,48 @@ modded class CarScript
 			}
 		}
 	}
+	
+	void DeleteOldFlag() // To delete unattached Dummy after restart, otherwise floating in air
+	{
+		float radius = 1.0;
 
+		vector carPosition = GetPosition();
+
+		array<Object> objectsInRange = new array<Object>;
+
+		GetGame().GetObjectsAtPosition(carPosition, radius, objectsInRange, null);
+
+		foreach (Object obj : objectsInRange)
+		{
+			if (obj.IsInherited(nm_CarflagDummy))
+			{
+				GetGame().ObjectDelete(obj);
+			}
+		}
+	}
+	
 	void AddChildFlag()
 	{
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
 			ItemBase attachedItem = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag")); 
 			
-			m_ItemDuplicate = nm_CarflagDummy.Cast(GetGame().CreateObject("nm_CarflagDummy", vector.Zero));
-			
-			if (m_ItemDuplicate) 
+			if (attachedItem) // null check
 			{
-				m_ItemDuplicate.SetOrientation("0 0 0");
-				m_ItemDuplicate.SetPosition("0 0 0");
-
-				if (attachedItem)
+				m_ItemDuplicate = nm_CarflagDummy.Cast(GetGame().CreateObject("nm_CarflagDummy", vector.Zero));
+				
+				if (m_ItemDuplicate) 
 				{
-					SetDuplicateProperties(m_ItemDuplicate, ItemBase.Cast(attachedItem));
-				}
+					m_ItemDuplicate.SetOrientation("0 0 0");
+					m_ItemDuplicate.SetPosition("0 0 0");
 
-				this.AddChild(m_ItemDuplicate, -1, false);
-				m_ItemDuplicate.Update();
+					  SetDuplicateProperties(m_ItemDuplicate, attachedItem);
+
+					this.AddChild(m_ItemDuplicate, -1, false);
+					m_ItemDuplicate.Update();
+
+					m_ItemDuplicate.SetSynchDirty();
+				}
 			}
 		}
 	}
@@ -75,11 +113,7 @@ modded class CarScript
 
 	void DeleteDuplicatedItem()
 	{
-		if (m_ItemDuplicate)
-		{
-			GetGame().ObjectDelete(m_ItemDuplicate);  // delete duplicate
-			m_ItemDuplicate = null;  // clear ref
-		}
+		DeleteOldFlag()
 	}
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
@@ -91,22 +125,22 @@ modded class CarScript
 		float currentHealth = GetHealth("", "");
 		float healthPercentage = (currentHealth / maxHealth) * 100;
 
-		// Update health of duplicated item if it exists
+		// Update health of duplicate
 		if (m_ItemDuplicate)
 		{
 			nm_CarflagDummy itemBaseDuplicate = nm_CarflagDummy.Cast(m_ItemDuplicate);
 			if (itemBaseDuplicate)
 			{
-				// set duplicated items health based (percentage)
+				// set duplicate health
 				itemBaseDuplicate.SetHealth("", "", maxHealth * (healthPercentage / 100));
 			}
 		}
 
-		// update health of attached flag (percentage)
+		// update health attached flag
 		ItemBase attachedFlag = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
 		if (attachedFlag)
 		{
 			attachedFlag.SetHealth("", "", maxHealth * (healthPercentage / 100));
 		}
 	}
-};
+}

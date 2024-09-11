@@ -35,7 +35,7 @@ modded class LongWoodenStick
     {
 		super.AfterStoreLoad();
 		
-		DeleteOldFlag()		
+		DeleteOldFlag();
 		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
     }
 	
@@ -55,7 +55,7 @@ modded class LongWoodenStick
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
 			// Check for Material_FPole_Flag slot
-			if (slot_name == "Material_FPole_Flag" && Flag_Base.Cast(item))
+			if (slot_name == "Material_FPole_Flag" && ItemBase.Cast(item))
 			{
 				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
 			}
@@ -80,57 +80,54 @@ modded class LongWoodenStick
 			}
 		}
 	}
-	
+
 	void AddChildFlag()
 	{
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
-			Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
-
-			if (!attachedFlag) return; // check valid attachedFlag
-
-			m_ItemDuplicate = GetGame().CreateObject("nm_StickflagDummy", vector.Zero);
-
 			PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
-
-			if (attachedFlag) // null check
+			
+			ItemBase attachedItem = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag")); 
+			
+			if (attachedItem) // null check
 			{
-				if (player)
+				m_ItemDuplicate = nm_StickflagDummy.Cast(GetGame().CreateObject("nm_StickflagDummy", vector.Zero));
+				
+				if (m_ItemDuplicate) 
 				{
-					EntityAI slot1Item = player.FindAttachmentBySlotName("Melee");
-					EntityAI slot2Item = player.FindAttachmentBySlotName("Shoulder");
-					if (slot1Item == this || slot2Item == this)
+					if (player)
 					{
-						// stick is in melee or shoulder slot
-						m_ItemDuplicate.SetPosition(nmBackPosition);
-						m_ItemDuplicate.SetOrientation(nmBackOrientation);
-					}	
-					else 
-					{ // stick isnt in melee or shoulder slot
+						EntityAI slot1Item = player.FindAttachmentBySlotName("Melee");
+						EntityAI slot2Item = player.FindAttachmentBySlotName("Shoulder");
+						if (slot1Item == this || slot2Item == this)
+						{
+							// stick is in melee or shoulder slot
+							m_ItemDuplicate.SetPosition(nmBackPosition);
+							m_ItemDuplicate.SetOrientation(nmBackOrientation);
+						}	
+						else 
+						{ // stick isnt in melee or shoulder slot
+							m_ItemDuplicate.SetPosition(nmDefaultPosition);
+							m_ItemDuplicate.SetOrientation(nmDefaultOrientation);
+						}
+					} // stick is not in player
+					else
+					{
 						m_ItemDuplicate.SetPosition(nmDefaultPosition);
 						m_ItemDuplicate.SetOrientation(nmDefaultOrientation);
 					}
-				} // stick is not in player
-				else
-				{
-					m_ItemDuplicate.SetPosition(nmDefaultPosition);
-					m_ItemDuplicate.SetOrientation(nmDefaultOrientation);
-				}
-			}
-			
-			nm_StickflagDummy FlagBaseDuplicate = nm_StickflagDummy.Cast(m_ItemDuplicate);
-			if (FlagBaseDuplicate)
-			{
-				SetDuplicateProperties(FlagBaseDuplicate, attachedFlag);
+				SetDuplicateProperties(m_ItemDuplicate, attachedItem);
 
 				this.AddChild(m_ItemDuplicate, -1, false);
 				m_ItemDuplicate.Update();
+
 				m_ItemDuplicate.SetSynchDirty();
+				}
 			}
 		}
 	}
-		
-    void SetDuplicateProperties(nm_StickflagDummy FlagBaseDuplicate, Flag_Base attachedFlag)
+	
+    void SetDuplicateProperties(nm_StickflagDummy FlagBaseDuplicate, ItemBase attachedFlag)
     {
 		if (FlagBaseDuplicate)
 		{
@@ -172,17 +169,8 @@ modded class LongWoodenStick
     {
 		super.EEItemDetached(item, slot_name);
 
-		DeleteOldFlag()
+		DeleteOldFlag();
     }
-
-	void DeleteDuplicatedItem()
-	{
-		if (m_ItemDuplicate)
-		{
-			GetGame().ObjectDelete(m_ItemDuplicate);  // delete duplicate
-			m_ItemDuplicate = null;  // clear ref
-		}
-	}
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
@@ -205,7 +193,7 @@ modded class LongWoodenStick
 		}
 
 		// Update health attached flag
-		Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
+		ItemBase attachedFlag = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
 		if (attachedFlag)
 		{
 			attachedFlag.SetHealth("", "", maxHealth * (healthPercentage / 100));

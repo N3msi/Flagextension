@@ -23,7 +23,7 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
     {
 		super.AfterStoreLoad();
 		
-		DeleteOldFlag()		
+		DeleteOldFlag();
 		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
     }
 	
@@ -113,7 +113,7 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 
 	void DeleteDuplicatedItem()
 	{
-		DeleteOldFlag()
+		DeleteOldFlag();
 	}
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)

@@ -5,10 +5,9 @@ void CreatenmArmband(EntityAI parent, string nmFlagTexture, string nmFlagName, f
         PlayerBase player = PlayerBase.Cast(parent);
         if (player)
         {			
-            // Safely cast the result of CreateInInventory to nm_ArmbandDummy
             nm_ArmbandDummy new_item = nm_ArmbandDummy.Cast(player.GetInventory().CreateInInventory("nm_ArmbandDummy"));
             
-            if (new_item) // Check if the casting was successful
+            if (new_item)
             {
                 new_item.SetnmFlagName(nmFlagName); // transfer flagname
                 new_item.SetnmFlagTexture(nmFlagTexture); // transfer flagtex

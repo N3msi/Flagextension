@@ -8,27 +8,10 @@ modded class LongWoodenStick
 
 	void LongWoodenStick()
     {   
-		AddChildFlag(); // recreate AddChild if flag is available each restart/relog
 	}
 
 	void ~LongWoodenStick()
     {
-		DeleteDuplicatedItem()
-	}
-
-	override void AfterStoreLoad()
-	{	
-        super.AfterStoreLoad();
-	}
-
-   override void EEItemAttached(EntityAI item, string slot_name)
-    {
-        super.EEItemAttached(item, slot_name);
-
-		if (GetGame().IsServer() && !GetGame().IsClient())
-		{
-			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 100, false);
-		}
 	}
 
 	void AddChildFlag()
@@ -90,6 +73,16 @@ modded class LongWoodenStick
 		}
     }
 
+   override void EEItemAttached(EntityAI item, string slot_name)	//seems to also get called on restart and so initiates the dummy again
+    {
+        super.EEItemAttached(item, slot_name);
+
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 100, false);
+		}
+	}
+	
 	override void OnWasAttached(EntityAI parent, int slot_id)
 	{
 		super.OnWasAttached(parent, slot_id);
@@ -98,6 +91,7 @@ modded class LongWoodenStick
 		{
 			if (m_ItemDuplicate)
 			{
+			// change posi & ori to fit backslot
 			m_ItemDuplicate.SetPosition(nmBackPosition);
 			m_ItemDuplicate.SetOrientation(nmBackOrientation);
 			}
@@ -123,7 +117,7 @@ modded class LongWoodenStick
     {
         super.EEItemDetached(item, slot_name);
 
-		DeleteDuplicatedItem()
+		DeleteDuplicatedItem();
     }
 
 	void DeleteDuplicatedItem()

@@ -4,26 +4,10 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 
 	void CarScript()
     {   
-		AddChildFlag(); // recreate AddChild if flag is available each restart/relog
 	}
 		
 	void ~CarScript()
     {
-		DeleteDuplicatedItem() //Kill dummy with Car
-	}
-	
-	override void EEItemAttached(EntityAI item, string slot_name)
-	{
-		super.EEItemAttached(item, slot_name);
-
-		if (GetGame().IsServer() && !GetGame().IsClient())
-		{
-			// Check for Material_FPole_Flag slot
-			if (slot_name == "Material_FPole_Flag" && Flag_Base.Cast(item))
-			{
-				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
-			}
-		}
 	}
 	
 	void AddChildFlag()
@@ -65,6 +49,20 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 			itemBaseDuplicate.SetHealth("", "", attachedFlagHealth); // set health
 		}
     }
+	
+	override void EEItemAttached(EntityAI item, string slot_name)	//seems to also get called on restart and so initiates the dummy again
+	{
+		super.EEItemAttached(item, slot_name);
+
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			// Check for Material_FPole_Flag slot
+			if (slot_name == "Material_FPole_Flag" && Flag_Base.Cast(item))
+			{
+				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
+			}
+		}
+	}	
 	
 	override void EEItemDetached(EntityAI item, string slot_name)
 	{

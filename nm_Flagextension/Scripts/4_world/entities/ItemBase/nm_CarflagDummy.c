@@ -7,7 +7,7 @@ class nm_CarflagDummy extends ItemBase
 	override void AfterStoreLoad()
 	{	
        super.AfterStoreLoad();
-       GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeleteOnRestart, 50, false);  // Kill AddChild Dummy each restart/relog to prevent "lost" dummies
+       GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeleteOnRestart, 50, false);  // Kill AddChild Dummy each restart/relog / EEItemAttached creates a new one each restart/relog
 	}
 
 	void DeleteOnRestart()

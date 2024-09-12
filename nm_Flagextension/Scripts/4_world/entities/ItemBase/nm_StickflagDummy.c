@@ -9,7 +9,20 @@ class nm_StickflagDummy extends ItemBase
 	
 	void ~nm_StickflagDummy()
 	{
-		
+	}
+
+	override void AfterStoreLoad()
+	{	
+        super.AfterStoreLoad();
+        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeleteOnRestart, 50, false);  // Kill AddChild Dummy each restart/relog / EEItemAttached creates a new one each restart/relog
+	}
+
+	void DeleteOnRestart()
+	{
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			GetGame().ObjectDelete(this);
+		}
 	}
 	
 	void SetFlagAttributes(string texturePath, string nmFlagName)
@@ -27,20 +40,6 @@ class nm_StickflagDummy extends ItemBase
         m_nmFlagTexture = texturePath;
         ApplyVisibility(); 
     }
-
-	override void AfterStoreLoad()
-	{	
-        super.AfterStoreLoad();
-        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeleteOnRestart, 50, false);  // Kill AddChild Dummy each restart/relog to prevent "lost" dummies
-	}
-
-	void DeleteOnRestart()
-	{
-		if (GetGame().IsServer() && !GetGame().IsClient())
-		{
-			GetGame().ObjectDelete(this);
-		}
-	}
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone) 	///bypassing damagesys to apply Material
     {

@@ -1,6 +1,5 @@
 class nm_StickflagDummy extends ItemBase
 {
-
 	private string m_nmFlagTexture; // Flag Texture
 	private string materialPath;	// Flag Name
 
@@ -10,6 +9,7 @@ class nm_StickflagDummy extends ItemBase
 	
 	void ~nm_StickflagDummy()
 	{
+		
 	}
 	
 	void SetFlagAttributes(string texturePath, string nmFlagName)
@@ -27,6 +27,20 @@ class nm_StickflagDummy extends ItemBase
         m_nmFlagTexture = texturePath;
         ApplyVisibility(); 
     }
+
+	override void AfterStoreLoad()
+	{	
+        super.AfterStoreLoad();
+        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeleteOnRestart, 50, false);  // Kill AddChild Dummy each restart/relog to prevent "lost" dummies
+	}
+
+	void DeleteOnRestart()
+	{
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			GetGame().ObjectDelete(this);
+		}
+	}
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone) 	///bypassing damagesys to apply Material
     {
@@ -74,29 +88,6 @@ class nm_StickflagDummy extends ItemBase
     override void OnVariablesSynchronized()
     {
         super.OnVariablesSynchronized();
-        ApplyVisibility();
-    }
-
-    override void OnStoreSave(ParamsWriteContext ctx)
-    {
-        super.OnStoreSave(ctx);
-        ctx.Write(m_nmFlagTexture); // Save Flag Tex
-    }
-
-    override bool OnStoreLoad(ParamsReadContext ctx, int version)
-    {
-        if (!super.OnStoreLoad(ctx, version))
-            return false;
-
-        if (!ctx.Read(m_nmFlagTexture))
-            return false;
-				
-        return true;
-    }
-
-    override void AfterStoreLoad()
-    {
-        super.AfterStoreLoad();
         ApplyVisibility();
     }
 

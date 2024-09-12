@@ -4,12 +4,18 @@ class nm_CarflagDummy extends ItemBase
 	private string m_nmFlagTexture; // Flag Texture
 	private string materialPath;	// Flag Name
 
-	void nm_CarflagDummy()
-	{
+	override void AfterStoreLoad()
+	{	
+       super.AfterStoreLoad();
+       GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeleteOnRestart, 50, false);  // Kill AddChild Dummy each restart/relog to prevent "lost" dummies
 	}
-	
-	void ~nm_CarflagDummy()
+
+	void DeleteOnRestart()
 	{
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			GetGame().ObjectDelete(this);
+		}
 	}
 	
 	void SetFlagAttributes(string texturePath, string nmFlagName)
@@ -74,29 +80,6 @@ class nm_CarflagDummy extends ItemBase
     override void OnVariablesSynchronized()
     {
         super.OnVariablesSynchronized();
-        ApplyVisibility();
-    }
-
-    override void OnStoreSave(ParamsWriteContext ctx)
-    {
-        super.OnStoreSave(ctx);
-        ctx.Write(m_nmFlagTexture); // Save Flag Tex
-    }
-
-    override bool OnStoreLoad(ParamsReadContext ctx, int version)
-    {
-        if (!super.OnStoreLoad(ctx, version))
-            return false;
-
-        if (!ctx.Read(m_nmFlagTexture))
-            return false;
-				
-        return true;
-    }
-
-    override void AfterStoreLoad()
-    {
-        super.AfterStoreLoad();
         ApplyVisibility();
     }
 

@@ -2,30 +2,15 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 {
 	private nm_CarflagDummy m_ItemDuplicate;
 
-    override void OnStoreSave(ParamsWriteContext ctx)
-    {
-        super.OnStoreSave(ctx);
-        ctx.Write(m_ItemDuplicate); // Save nm_CarflagDummy
-    }
-
-    override bool OnStoreLoad(ParamsReadContext ctx, int version)
-    {
-        if (!super.OnStoreLoad(ctx, version))
-            return false;
-
-        if (!ctx.Read(m_ItemDuplicate))
-            return false;
-				
-        return true;
-    }
-
-    override void AfterStoreLoad()
-    {
-		super.AfterStoreLoad();
+	void CarScript()
+    {   
+		AddChildFlag(); // recreate AddChild if flag is available each restart/relog
+	}
 		
-		DeleteOldFlag();
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
-    }
+	void ~CarScript()
+    {
+		DeleteDuplicatedItem() //Kill dummy with Car
+	}
 	
 	override void EEItemAttached(EntityAI item, string slot_name)
 	{
@@ -37,25 +22,6 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 			if (slot_name == "Material_FPole_Flag" && Flag_Base.Cast(item))
 			{
 				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 10, false);
-			}
-		}
-	}
-	
-	void DeleteOldFlag() // To delete unattached Dummy after restart, otherwise floating in air
-	{
-		float radius = 1.0;
-
-		vector carPosition = GetPosition();
-
-		array<Object> objectsInRange = new array<Object>;
-
-		GetGame().GetObjectsAtPosition(carPosition, radius, objectsInRange, null);
-
-		foreach (Object obj : objectsInRange)
-		{
-			if (obj.IsInherited(nm_CarflagDummy))
-			{
-				GetGame().ObjectDelete(obj);
 			}
 		}
 	}
@@ -113,7 +79,14 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 
 	void DeleteDuplicatedItem()
 	{
-		DeleteOldFlag();
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			if (m_ItemDuplicate)
+			{
+				GetGame().ObjectDelete(m_ItemDuplicate);  // delete duplicate
+				m_ItemDuplicate = null;  // clear ref
+			}
+		}
 	}
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)

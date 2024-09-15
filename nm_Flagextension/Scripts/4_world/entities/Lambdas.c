@@ -29,15 +29,17 @@ class nmPlaceFlagonGround : TurnItemIntoItemLambda
 		nm_Flag_deployed flagItem;
 		if (nm_Flag_deployed.CastTo(flagItem, new_item))
 		{
-			// Set orientation and health
+			// transfer ori
 			flagItem.SetOrientation(m_Orientation);
-			flagItem.SetHealth("", "", m_FlagHealth);
 			flagItem.OnPlacementComplete(m_Player, flagItem.GetPosition(), m_Orientation);
-
-			// Apply the texture to the new item
+			
+			// transfer health
+			flagItem.SetHealth("", "", m_FlagHealth);
+			
+			// transfer tex
 			flagItem.SetnmFlagTexture(m_FlagTexture);
 
-			// Set the flag name on the new item
+			// transfer flagname
 			flagItem.SetnmFlagName(m_FlagName);
 		}
     }    

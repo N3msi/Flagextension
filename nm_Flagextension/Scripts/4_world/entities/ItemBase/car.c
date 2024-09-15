@@ -25,9 +25,10 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 					m_ItemDuplicate.SetOrientation("0 0 0");
 					m_ItemDuplicate.SetPosition("0 0 0");
 
-					  SetDuplicateProperties(m_ItemDuplicate, attachedItem);
+					SetDuplicateProperties(m_ItemDuplicate, attachedItem);
 
 					this.AddChild(m_ItemDuplicate, -1, false);
+					m_ItemDuplicate.SetParent(this);
 					m_ItemDuplicate.Update();
 
 					m_ItemDuplicate.SetSynchDirty();
@@ -75,6 +76,16 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 		}
 	}
 
+    override void OnBeforeTryDelete()
+    {
+        super.OnBeforeTryDelete();
+        
+        if (GetGame().IsServer() && !GetGame().IsClient())
+        {
+            DeleteDuplicatedItem();  // clean dummy before deleted
+        }
+    }
+	
 	void DeleteDuplicatedItem()
 	{
 		if (GetGame().IsServer() && !GetGame().IsClient())
@@ -90,28 +101,27 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
 		super.EEHealthLevelChanged(oldLevel, newLevel, zone);
-
-		// Calculate health percentage
-		float maxHealth = GetMaxHealth("", "");
-		float currentHealth = GetHealth("", "");
-		float healthPercentage = (currentHealth / maxHealth) * 100;
-
-		// Update health of duplicate
-		if (m_ItemDuplicate)
+		
+		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
-			nm_CarflagDummy itemBaseDuplicate = nm_CarflagDummy.Cast(m_ItemDuplicate);
-			if (itemBaseDuplicate)
+			if (newLevel == GameConstants.STATE_RUINED) // check if parent is ruined
 			{
-				// set duplicate health
-				itemBaseDuplicate.SetHealth("", "", maxHealth * (healthPercentage / 100));
-			}
-		}
+				Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag")); // find & ruin flag
 
-		// update health attached flag
-		ItemBase attachedFlag = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
-		if (attachedFlag)
-		{
-			attachedFlag.SetHealth("", "", maxHealth * (healthPercentage / 100));
+				if (attachedFlag)
+				{
+					attachedFlag.SetHealth("", "", 0);
+				}
+
+				if (m_ItemDuplicate) // find & ruin dummy
+				{
+					nm_CarflagDummy flagDummy = nm_CarflagDummy.Cast(m_ItemDuplicate);
+					if (flagDummy)
+					{
+						flagDummy.SetHealth("", "", 0);
+					}
+				}
+			}
 		}
 	}
 }

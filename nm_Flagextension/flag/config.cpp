@@ -712,7 +712,7 @@ class cfgVehicles
 	};
 	class nm_StickflagDummy: Inventory_Base
 	{
-		scope=1;
+		scope=2;
 		displayName="";
 		model="nm_Flagextension\flag\nm_StickflagDummy.p3d";
 		weight=10000;
@@ -923,7 +923,7 @@ class cfgVehicles
 	};
 	class nm_CarflagDummy: Inventory_Base
 	{
-		scope=1;
+		scope=2;
 		displayName="";
 		model="nm_Flagextension\flag\nm_CarflagDummy.p3d";
 		weight=10000;

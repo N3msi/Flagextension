@@ -79,13 +79,31 @@ modded class LongWoodenStick
 		}
     }
 
-   override void EEItemAttached(EntityAI item, string slot_name)	//seems to also get called on restart and so initiates the dummy again
-    {
-        super.EEItemAttached(item, slot_name);
+	override void EEItemAttached(EntityAI item, string slot_name)
+	{
+		super.EEItemAttached(item, slot_name);
 
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
-			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 100, false);
+			// flag is attached
+			if (slot_name == "Material_FPole_Flag")
+			{
+				// get location of stick
+				InventoryLocation location = new InventoryLocation();
+				this.GetInventory().GetCurrentInventoryLocation(location);
+				
+				// check if valid location
+				bool isValidLocation = (location.GetType() == InventoryLocationType.HANDS || location.GetType() == InventoryLocationType.GROUND || location.GetType() == InventoryLocationType.ATTACHMENT);
+										
+				if (isValidLocation)
+				{
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddChildFlag, 50, false);
+				}
+				else
+				{
+					DeleteDuplicatedItem(); // ensure no dummy if not valid location
+				}
+			}
 		}
 	}
 
@@ -95,7 +113,7 @@ modded class LongWoodenStick
 
 		bool isValidLocation = false;
 
-		// check if new location is hands, ground or attached
+		// check if new location is hands, ground, attached
 		if (newLoc.GetType() == InventoryLocationType.HANDS || newLoc.GetType() == InventoryLocationType.GROUND || newLoc.GetType() == InventoryLocationType.ATTACHMENT )
 		{
 			isValidLocation = true;
@@ -161,26 +179,16 @@ modded class LongWoodenStick
 		}
 	}
 
-    override void OnBeforeTryDelete()
-    {
-        super.OnBeforeTryDelete();
-        
-        if (GetGame().IsServer() && !GetGame().IsClient())
-        {
-            DeleteDuplicatedItem();  // clean dummy before deleted
-        }
-    }
-	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
 		super.EEHealthLevelChanged(oldLevel, newLevel, zone);
 		
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
-			// check if parent is ruined
+			// Check if the car itself has become ruined
 			if (newLevel == GameConstants.STATE_RUINED)
 			{
-				// find & ruin flag
+				// Find and ruin the attached flag
 				Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
 
 				if (attachedFlag)
@@ -188,13 +196,13 @@ modded class LongWoodenStick
 					attachedFlag.SetHealth("", "", 0);
 				}
 
-				// find & ruin dummy
+				// Find and ruin the dummy flag if it exists
 				if (m_ItemDuplicate)
 				{
 					nm_StickflagDummy flagDummy = nm_StickflagDummy.Cast(m_ItemDuplicate);
 					if (flagDummy)
 					{
-						flagDummy.SetHealth("", "", 0);
+						flagDummy.SetHealth("", "", 0);  // Set health to 0 to ruin the dummy
 					}
 				}
 			}

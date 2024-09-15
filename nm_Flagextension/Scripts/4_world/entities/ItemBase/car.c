@@ -101,24 +101,25 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
 		super.EEHealthLevelChanged(oldLevel, newLevel, zone);
-		
+
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
-			if (newLevel == GameConstants.STATE_RUINED) // check if parent is ruined
+			if (newLevel == GameConstants.STATE_RUINED && oldLevel != newLevel)
 			{
-				Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag")); // find & ruin flag
+				Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
 
 				if (attachedFlag)
 				{
-					attachedFlag.SetHealth("", "", 0);
+					attachedFlag.SetHealth("", "", 0); // Set flag ruined
 				}
 
-				if (m_ItemDuplicate) // find & ruin dummy
+				if (m_ItemDuplicate)
 				{
 					nm_CarflagDummy flagDummy = nm_CarflagDummy.Cast(m_ItemDuplicate);
 					if (flagDummy)
 					{
-						flagDummy.SetHealth("", "", 0);
+						flagDummy.SetHealth("", "", 0); // Set dummy ruined
+						flagDummy.SetSynchDirty(); 
 					}
 				}
 			}

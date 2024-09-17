@@ -705,22 +705,19 @@ class cfgVehicles
 	class LongWoodenStick: Inventory_Base
 	{
 		scope=2;
+		rotationFlags=1;
+		model="nm_Flagextension\flag\nm_StickflagDummy.p3d";
 		attachments[]+=
 		{
 			"Material_FPole_Flag"
 		};
-	};
-	class nm_StickflagDummy: Inventory_Base
-	{
-		scope=2;
-		displayName="";
-		model="nm_Flagextension\flag\nm_StickflagDummy.p3d";
-		weight=10000;
-		absorbency=0.1;
 		hiddenSelections[]=
 		{
+			"posi_default",
+			"posi_back",
+			"stick",
 			"camo"
-		};
+		};		
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -736,6 +733,33 @@ class cfgVehicles
 						{0.30000001,{""}},
 						{0,{""}}
 					};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class FragGrenade
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Infected
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Melee
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
 				};
 			};
 		};

@@ -1,9 +1,7 @@
 class nm_CarflagDummy extends ItemBase
 {
-
 	private string m_nmFlagTexture; // Flag Texture
 	private string materialPath;	// Flag Name
-	private Object m_ParentObject;  // Track the parent
 
 	override void AfterStoreLoad()
 	{	
@@ -11,24 +9,11 @@ class nm_CarflagDummy extends ItemBase
        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeleteOnRestart, 50, false);  // Kill AddChild Dummy each restart/relog / EEItemAttached creates a new one each restart/relog
 	}
 
-	void SetParent(EntityAI parent)
-    {
-        m_ParentObject = parent;
-    }
-	
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
 		
         ApplyVisibility();
-		
-		if (GetGame().IsServer() && !GetGame().IsClient())
-        {
-            if (!m_ParentObject)
-            {
-                GetGame().ObjectDelete(this);		// Delete if parent gets lost
-            }
-        }
 	}
 
 	void DeleteOnRestart()

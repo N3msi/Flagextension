@@ -2,14 +2,6 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 {
 	private nm_CarflagDummy m_ItemDuplicate;
 
-	void CarScript()
-    {   
-	}
-		
-	void ~CarScript()
-    {
-	}
-	
 	void AddChildFlag()
 	{
 		if (GetGame().IsServer() && !GetGame().IsClient())
@@ -28,7 +20,6 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 					SetDuplicateProperties(m_ItemDuplicate, attachedItem);
 
 					this.AddChild(m_ItemDuplicate, -1, false);
-					m_ItemDuplicate.SetParent(this);
 					m_ItemDuplicate.Update();
 
 					m_ItemDuplicate.SetSynchDirty();
@@ -76,15 +67,25 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 		}
 	}
 
-    override void OnBeforeTryDelete()
-    {
-        super.OnBeforeTryDelete();
-        
-        if (GetGame().IsServer() && !GetGame().IsClient())
-        {
-            DeleteDuplicatedItem();  // clean dummy before deleted
-        }
-    }
+	override void EEDelete(EntityAI parent)
+	{
+		super.EEDelete(parent);
+		
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			DeleteDuplicatedItem();
+		}
+	}
+
+	override void OnBeforeTryDelete()
+	{
+		super.OnBeforeTryDelete();
+
+		if (GetGame().IsServer() && !GetGame().IsClient())
+		{
+			DeleteDuplicatedItem();
+		}
+	}
 	
 	void DeleteDuplicatedItem()
 	{
@@ -97,30 +98,28 @@ modded class CarScript ///Note: To make custom cars compatible, just add the "Ma
 			}
 		}
 	}
-
+	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
-		super.EEHealthLevelChanged(oldLevel, newLevel, zone);
-
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		
+		TransferHealthToDummy();
+	}
+	
+	void TransferHealthToDummy()
+	{
 		if (GetGame().IsServer() && !GetGame().IsClient())
 		{
-			if (newLevel == GameConstants.STATE_RUINED && oldLevel != newLevel)
+			ItemBase attachedFlag = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag")); 
+			
+			if (attachedFlag && m_ItemDuplicate)
 			{
-				Flag_Base attachedFlag = Flag_Base.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
+				float carHealth = GetHealth("", ""); 
 
-				if (attachedFlag)
+				if (carHealth <= 0)  // if car is ruined
 				{
-					attachedFlag.SetHealth("", "", 0); // Set flag ruined
-				}
-
-				if (m_ItemDuplicate)
-				{
-					nm_CarflagDummy flagDummy = nm_CarflagDummy.Cast(m_ItemDuplicate);
-					if (flagDummy)
-					{
-						flagDummy.SetHealth("", "", 0); // Set dummy ruined
-						flagDummy.SetSynchDirty(); 
-					}
+					attachedFlag.SetHealth("", "", 0);  // ruin flag					
+					m_ItemDuplicate.SetHealth("", "", 0);  // ruin duplicate
 				}
 			}
 		}

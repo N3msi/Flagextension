@@ -151,31 +151,36 @@ modded class Flag_Base
 			GetGame().ObjectDelete(flag); 
 		}
 	}
-	
+
 	override void OnWasAttached(EntityAI parent, int slot_id)
 	{
-		super.OnWasAttached(parent,slot_id);
+		super.OnWasAttached(parent, slot_id);
 
-		string nmFlagTexture = GetHiddenSelectionsTextures()[0]; // Get FlagTexture	
-		string nmFlagName = this.GetType(); // get FlagName
-		float nmFlagHealth = this.GetHealth(); // get Flag Health
-		
-		if (parent && parent.IsKindOf("SurvivorBase"))
+		if (GetGame().IsServer()) // Ensure code runs only on the server
 		{
-			EntityAI ABSlot = parent.FindAttachmentBySlotName("armband");
-			EntityAI BackSlot = parent.FindAttachmentBySlotName("back");			
-
-			if ((ABSlot && ABSlot.IsKindOf("Flag_Base")) || (BackSlot && BackSlot.IsKindOf("Flag_Base")))
+			string nmFlagTexture = GetHiddenSelectionsTextures()[0]; // Get FlagTexture	
+			string nmFlagName = this.GetType(); // get FlagName
+			float nmFlagHealth = this.GetHealth(); // get Flag Health
+			
+			// Check if the parent is a SurvivorBase
+			if (parent && parent.IsKindOf("SurvivorBase"))
 			{
-			// create armband later to prevent bugged slot
-			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(CreatenmArmband, 100, false, parent, nmFlagTexture, nmFlagName, nmFlagHealth, slot_id);
+				EntityAI ABSlot = parent.FindAttachmentBySlotName("armband");
+				EntityAI BackSlot = parent.FindAttachmentBySlotName("back");			
 
-			// delete flag fist to prevent bugged slot
-			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeletenmFlag, 50, false, this);
+				if ((ABSlot && ABSlot.IsKindOf("Flag_Base")) || (BackSlot && BackSlot.IsKindOf("Flag_Base")))
+				{
+					// Create armband later to prevent bugged slot
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(CreatenmArmband, 100, false, parent, nmFlagTexture, nmFlagName, nmFlagHealth, slot_id);
+
+					// Delete flag first to prevent bugged slot
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DeletenmFlag, 50, false, this);
+				}
 			}
 		}
 		else
-		{	
+		{
+			// Client-side operations
 			SetObjectMaterial(0, materialPathunfolded); // mats tex on unfolded
 			ShowSelection("unfolded");
 			HideSelection("folded");

@@ -33,17 +33,18 @@ class ActionTakenmFlag: ActionContinuousBase
 		m_ConditionItem 	= new CCINotPresent();
 		m_Sound = "nm_Folding_Sound";
 	}
-	
+
+
 	override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
 	{
 		ItemBase targetItem = ItemBase.Cast(target.GetObject());
 		
-		if (targetItem.IsKindOf("nm_Flag_deployed") && targetItem.IsEmpty() )
+		if (targetItem && targetItem.IsKindOf("nm_Flag_deployed") && targetItem.IsEmpty())
 		{
 			return true;
-		} 
+		}
 		return false;
-	}
+	}	
 
 	override void OnFinishProgressServer(ActionData action_data)
 	{

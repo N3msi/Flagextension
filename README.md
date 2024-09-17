@@ -1,14 +1,5 @@
 TODO:
-must haves:
-
-- testing rvmats dusk/dawn behavior
-- testing flag on woodenStick
-- testing flag on Cars
-- testing synchronicity on multiple players
-
-nice-to-haves:
-- flagepoleitem to find and place
-- mod.cpp
+- testing
 
 Credits
 This mod is made by n3msi and Buddy

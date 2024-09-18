@@ -764,6 +764,100 @@ class cfgVehicles
 			};
 		};
 	};
+	class nm_LongWoodenStick_deployed : Inventory_Base
+	{
+		scope = 2;
+		displayName="$STR_CfgVehicles_LongWoodenStick0";
+		descriptionShort="$STR_CfgVehicles_LongWoodenStick1";
+		model="nm_Flagextension\flag\nm_StickflagDummy_deployed.p3d";
+		overrideDrawArea="8.0";
+		forceFarBubble="true";
+		slopeTolerance=0.2;
+		yawPitchRollLimit[]={45,45,45};
+		carveNavmesh=1;
+		canBeDigged=0;
+		heavyItem=1;
+		weight=10000;
+		itemSize[]={2,2};
+		repairableWithKits[]={};
+		repairCosts[]={};
+		itemBehaviour=0;
+		absorbency=0.1;
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		hiddenSelections[]=
+		{
+			"posi_default",
+			"stick",
+			"camo"
+		};	
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints=100;
+					healthLevels[]=
+					{
+						{1,{""}},
+						{0.69999999,{""}},
+						{0.5,{""}},
+						{0.30000001,{""}},
+						{0,{""}}
+					};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class FragGrenade
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Infected
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+				class Melee
+				{
+					class Health{damage=0.94999999;};
+					class Blood{damage=1;};
+					class Shock{damage=1;};
+				};
+			};
+		};
+	};
+	class nm_LongWoodenStick_Placing: nm_Flag_deployed
+	{
+		displayName="This is a hologram";
+		descriptionShort="Nothing to see here, move along";
+		model="nm_Flagextension\flag\nm_StickflagDummy_placing.p3d";
+		attachments[]+=
+		{
+			"Material_FPole_Flag"
+		};
+		hiddenSelections[]=
+		{
+			"posi_default",
+			"stick",
+			"camo"
+		};	
+		alignHologramToTerain=0;
+		slopeTolerance=0.30000001;
+		storageCategory=10;
+	};
 	class CarScript;		///Note: To make custom cars compatible, just add the "Material_FPole_Flag" - Slot to theire config.No scripting needed as long as they inherit from CarScript
 	class OffroadHatchback: CarScript
 	{

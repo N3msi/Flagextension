@@ -126,8 +126,6 @@ class nm_Flag_deployed extends ItemBase
     }
 }
 
-
-
 class nm_Flag_placing extends ItemBase
 {
 

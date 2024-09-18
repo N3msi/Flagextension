@@ -1,12 +1,3 @@
-modded class PlayerBase
-{
-	override void SetActions()
-	{
-		super.SetActions();
-		AddAction(ActionTakenmFlag);
-	}
-};
-
 class ActionTakenmFlagCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()

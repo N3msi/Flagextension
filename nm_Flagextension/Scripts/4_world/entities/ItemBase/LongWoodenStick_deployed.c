@@ -1,20 +1,18 @@
-modded class LongWoodenStick
+class nm_LongWoodenStick_deployed extends ItemBase
 {
-	ref protected EffectSound m_DeployLoopSound;
 	private string m_nmFlagTexture; // Flag Texture
 	private string m_nmStickTexture = "nm_Flagextension\\flag\\data\\nm_WoodenStick_co.paa"; // Tex Stick
 	private string materialPathFlag; // stored flag mats on EEHealthLevelChanged
 	private string materialPathStick; // stored stick mats on EEHealthLevelChanged
-    private bool m_IsPosiDefault; // Save visible selection
-    private bool m_IsPosiBack; // Save visible selection
+    private bool m_IsFlag; // Save visible selection
 	private bool m_IsNoFlag; // Save visible selection
 
-	void LongWoodenStick()
+	void nm_LongWoodenStick_deployed()
     {   
 		ApplyVisibility();
 	}
 
-	void ~LongWoodenStick()
+	void ~nm_LongWoodenStick_deployed()
     {
 	}
 
@@ -117,48 +115,32 @@ modded class LongWoodenStick
     }
 
 	void ApplyVisibility()
-	{
-		
-		if (m_IsPosiDefault) // flag default visible
+	{	
+		if (m_IsFlag) // flag default visible
 		{
 			SetObjectTexture(0, m_nmFlagTexture);
 			SetObjectMaterial(0, materialPathFlag);
-			SetObjectTexture(1, "");
-			SetObjectMaterial(1, "");
-		}
-		else if (m_IsPosiBack) // flag back visible
-		{
-			SetObjectTexture(1, m_nmFlagTexture);
-			SetObjectMaterial(1, materialPathFlag);
-			SetObjectTexture(0, "");
-			SetObjectMaterial(0, "");
 		}
 		else if (m_IsNoFlag) // no flag visible
 		{
 			SetObjectTexture(0, ""); 
 			SetObjectMaterial(0, ""); 
-			SetObjectTexture(1, "");
-			SetObjectMaterial(1, "");
 		}
 		// flag default visible
 		else
 		{
 			SetObjectTexture(0, "");
 			SetObjectMaterial(0, "");
-			SetObjectTexture(1, "");
-			SetObjectMaterial(1, "");
 		}
-		SetObjectTexture(2, m_nmStickTexture); 
-		SetObjectMaterial(2, materialPathStick);
-		
+		SetObjectTexture(1, m_nmStickTexture); 
+		SetObjectMaterial(1, materialPathStick);	
 	}
 
     override void OnStoreSave(ParamsWriteContext ctx)
     {
         super.OnStoreSave(ctx);
         ctx.Write(m_nmFlagTexture); // Save Flag Tex
-        ctx.Write(m_IsPosiDefault); // Save visible selection
-        ctx.Write(m_IsPosiBack); // Save visible selection
+        ctx.Write(m_IsFlag); // Save visible selection
         ctx.Write(m_IsNoFlag); // Save visible selection
     }
 
@@ -170,11 +152,8 @@ modded class LongWoodenStick
         if (!ctx.Read(m_nmFlagTexture))
             return false;
 		
-        if (!ctx.Read(m_IsPosiDefault))
-            m_IsPosiDefault = false;
-
-        if (!ctx.Read(m_IsPosiBack))
-            m_IsPosiBack = false;
+        if (!ctx.Read(m_IsFlag))
+            m_IsFlag = false;
 		
         if (!ctx.Read(m_IsNoFlag))
             m_IsNoFlag = false;
@@ -193,90 +172,30 @@ modded class LongWoodenStick
 	{
 		if (GetGame().IsServer()) // serverside
 		{
-			PlayerBase player = null;
-			if (parent)
-			{
-				EntityAI rootEntity = parent.GetHierarchyRootPlayer();
-				if (rootEntity)
-				{
-					player = PlayerBase.Cast(rootEntity);
-				}
-			}
-
 			ItemBase attachedItem = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag"));
 			
 			if (attachedItem) // Flag is attached
 			{
-				if (player)
-				{
-					EntityAI meleeItem = player.FindAttachmentBySlotName("Melee");
-					EntityAI shoulderItem = player.FindAttachmentBySlotName("Shoulder");
+				m_IsFlag = true;
+				m_IsNoFlag = false;
 
-					if (meleeItem == this || shoulderItem == this) // flag back visible
-					{
-						m_IsPosiDefault = false;
-						m_IsPosiBack = true;
-						m_IsNoFlag = false;
-
-						SetObjectTexture(0, ""); 
-						SetObjectMaterial(0, ""); 
-						SetObjectTexture(1, m_nmFlagTexture); 
-						SetObjectMaterial(1, materialPathFlag);
-					}
-					else // flag default visible
-					{
-						m_IsPosiDefault = true;
-						m_IsPosiBack = false;
-						m_IsNoFlag = false;
-
-						SetObjectTexture(0, m_nmFlagTexture); 
-						SetObjectMaterial(0, materialPathFlag);
-						SetObjectTexture(1, "");
-						SetObjectMaterial(1, "");
-					}
-				}
-				else // flag default visible
-				{
-					m_IsPosiDefault = true;
-					m_IsPosiBack = false;
-					m_IsNoFlag = false;
-
-					SetObjectTexture(0, m_nmFlagTexture);
-					SetObjectMaterial(0, materialPathFlag);
-					SetObjectTexture(1, "");
-					SetObjectMaterial(1, "");
-				}
+				SetObjectTexture(0, m_nmFlagTexture); 
+				SetObjectMaterial(0, materialPathFlag);
 			}
-			else // No flag visible
+			else // No flag attached
 			{
-				m_IsPosiDefault = false;
-				m_IsPosiBack = false;
+				m_IsFlag = false;
 				m_IsNoFlag = true;
 
 				SetObjectTexture(0, "");
 				SetObjectMaterial(0, "");
-				SetObjectTexture(1, "");
-				SetObjectMaterial(1, "");
 			}
 			// stick always visible
-			SetObjectTexture(2, m_nmStickTexture); 
-			SetObjectMaterial(2, materialPathStick);
+			SetObjectTexture(1, m_nmStickTexture); 
+			SetObjectMaterial(1, materialPathStick);
 		}
 	}
-
-	override void OnWasAttached(EntityAI parent, int slot_id)
-	{
-		super.OnWasAttached(parent, slot_id);
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ApplyTexture, 50, false, this);
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Synchronize, 60, false);
-	}
-
-	override void OnWasDetached(EntityAI parent, int slot_id)
-	{
-		super.OnWasDetached(parent, slot_id);
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ApplyTexture, 50, false, this);
-	}
-
+	
 	override void EEItemAttached(EntityAI item, string slot_name)
 	{
 		super.EEItemAttached(item, slot_name);
@@ -318,79 +237,36 @@ modded class LongWoodenStick
 		}
 	}
 
-	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
-	{
-		if( !super.CanReceiveAttachment( attachment, slotId ) )
-		{
-			return false;
-		}
-		return !GetInventory().IsInCargo();
-	}
-	
 	override bool CanPutInCargo( EntityAI parent )
     {
-	   ItemBase attachedItem = ItemBase.Cast(FindAttachmentBySlotName("Material_FPole_Flag")); 
-	   if(attachedItem)
-		{
-			return false;
-		}
-		return true;
+        return false;
+    }
+    
+    override bool CanPutIntoHands(EntityAI parent)
+    {
+        return false;
     }
 	
-    override void SetActions()
-    {
-        super.SetActions();
+};
 
-        AddAction(ActionClapBearTrapWithThisItem);
-        AddAction(ActionBreakLongWoodenStick);
-        AddAction(ActionAttachToConstruction);
-		AddAction(ActionTogglePlaceObject);	
-		AddAction(ActionPlaceObject);
-    }
+class nm_LongWoodenStick_placing extends ItemBase
+{
 
-	override void OnPlacementComplete(Man player, vector position = "0 0 0", vector orientation = "0 0 0")
+	protected void nm_LongWoodenStick_placing()
 	{
-		super.OnPlacementComplete(player, position, orientation);
-
-		if (GetGame().IsServer() || !GetGame().IsMultiplayer())
-		{
-			nmPlaceStickonGround lambda = new nmPlaceStickonGround(this, GetItem(), PlayerBase.Cast(player), position, orientation);
-			player.ServerReplaceItemInHandsWithNewElsewhere(lambda);
-		}
-
-		SetIsDeploySound(true);
+		SetIsHologram(true);
 	}
 	
 	override bool IsDeployable()
 	{
-		return true;
+		return false;
 	}
 
-	override bool IsBasebuildingKit()
+	override void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner)
 	{
-		return true;
-	}
-	
-	override string GetDeploySoundset()
-	{
-		return "putDown_FenceKit_SoundSet";
-	}
+        super.OnItemLocationChanged(old_owner, new_owner);
 
-	void PlayDeployLoopSound()
-	{
-		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
-		{
-			m_DeployLoopSound = SEffectManager.PlaySound(GetLoopDeploySoundset(), GetPosition());
-		}
+        // Delete the item whenever its location changes
+        GetGame().ObjectDelete(this);
 	}
-	
-    string GetItem()
-    {
-        return "nm_LongWoodenStick_deployed";
-    }
-	
-	string GetHolo()
-    {
-        return "nm_LongWoodenStick_placing";
-    }
-};
+}

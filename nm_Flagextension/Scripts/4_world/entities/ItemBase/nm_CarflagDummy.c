@@ -61,9 +61,46 @@ class nm_CarflagDummy extends ItemBase
                 materialPath = "nm_Flagextension\\flag\\data\\nm_stickflag.rvmat"; // Fallback material
                 break;
         }
-
-        // Reapply visibility and material
+		SetAttachmentHealth(newLevel);
         ApplyVisibility();
+    }
+
+	void SetAttachmentHealth(int newHealthLevel)
+    {
+		if (GetGame().IsServer())
+        {
+			EntityAI parent = EntityAI.Cast(GetParent());
+			
+			if (parent && parent.IsInherited(CarScript))
+			{
+				ItemBase attachedFlag = ItemBase.Cast(parent.FindAttachmentBySlotName("Material_FPole_Flag"));
+				
+				if (attachedFlag)
+				{
+					// synch health of attached flag with dummy
+					switch (newHealthLevel)
+					{
+						case GameConstants.STATE_RUINED:
+							attachedFlag.SetHealth(0);
+							break;
+						case GameConstants.STATE_BADLY_DAMAGED:
+							attachedFlag.SetHealth(attachedFlag.GetMaxHealth() * 0.2);
+							break;
+						case GameConstants.STATE_DAMAGED:
+							attachedFlag.SetHealth(attachedFlag.GetMaxHealth() * 0.5);
+							break;
+						case GameConstants.STATE_WORN:
+							attachedFlag.SetHealth(attachedFlag.GetMaxHealth() * 0.8);
+							break;
+						case GameConstants.STATE_PRISTINE:
+							attachedFlag.SetHealth(attachedFlag.GetMaxHealth());
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
     }
 	
     private void ApplyVisibility()

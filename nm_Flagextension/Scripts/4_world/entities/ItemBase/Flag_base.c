@@ -17,20 +17,6 @@ void CreatenmArmband(EntityAI parent, string nmFlagTexture, string nmFlagName, f
     }
 }
 
-modded class Hologram
-{
-    override string ProjectionBasedOnParent()
-    {
-        Flag_Base Flag = Flag_Base.Cast( m_Player.GetHumanInventory().GetEntityInHands() );
-
-        if (Flag)
-        {
-            return Flag.GetHolo();
-        }
-        return super.ProjectionBasedOnParent();
-    }
-}
-
 modded class Flag_Base
 {
 	ref protected EffectSound m_DeployLoopSound;

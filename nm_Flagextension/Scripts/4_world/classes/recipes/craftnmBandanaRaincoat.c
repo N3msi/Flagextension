@@ -65,7 +65,7 @@ class nm_CraftBandanaRaincoat extends RecipeBase
 		
 		// crafting multiple results
 		//result1
-		AddResult("nm_BandanaDummy");
+		AddResult("nm_BandanaRCDummy");
 		m_ResultSetFullQuantity[0] = false;
 		m_ResultSetQuantity[0] = -1;
 		m_ResultSetHealth[0] = -1;
@@ -76,7 +76,7 @@ class nm_CraftBandanaRaincoat extends RecipeBase
 		m_ResultReplacesIngredient[0] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
 		
 		//result2
-		AddResult("nm_BandanaDummy");//single result
+		AddResult("nm_BandanaRCDummy");//single result
 		m_ResultSetFullQuantity[1] = false;
 		m_ResultSetQuantity[1] = -1;
 		m_ResultSetHealth[1] = -1;
@@ -86,38 +86,6 @@ class nm_CraftBandanaRaincoat extends RecipeBase
 		m_ResultUseSoftSkills[1] = true;// set 'true' to allow modification of the values by softskills on this result
 		m_ResultReplacesIngredient[1] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
 		
-		//result3
-		AddResult("nm_BandanaDummy");//single result
-		m_ResultSetFullQuantity[2] = false;
-		m_ResultSetQuantity[2] = -1;
-		m_ResultSetHealth[2] = -1;
-		m_ResultInheritsHealth[2] = 0;// (value) == -1 means do nothing; a (value) >= 0 means this result will inherit health from ingredient number (value);(value) == -2 means this result will inherit health from all ingredients averaged(result_health = combined_health_of_ingredients / number_of_ingredients)
-		m_ResultInheritsColor[2] = -1;// (value) == -1 means do nothing; a (value) >= 0 means this result classname will be a composite of the name provided in AddResult method and config value "color" of ingredient (value)
-		m_ResultToInventory[2] = -2;
-		m_ResultUseSoftSkills[2] = true;// set 'true' to allow modification of the values by softskills on this result
-		m_ResultReplacesIngredient[2] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
-		
-		//result4
-		AddResult("nm_BandanaDummy");//single result
-		m_ResultSetFullQuantity[3] = false;
-		m_ResultSetQuantity[3] = -1;
-		m_ResultSetHealth[3] = -1;
-		m_ResultInheritsHealth[3] = 0;// (value) == -1 means do nothing; a (value) >= 0 means this result will inherit health from ingredient number (value);(value) == -2 means this result will inherit health from all ingredients averaged(result_health = combined_health_of_ingredients / number_of_ingredients)
-		m_ResultInheritsColor[3] = -1;// (value) == -1 means do nothing; a (value) >= 0 means this result classname will be a composite of the name provided in AddResult method and config value "color" of ingredient (value)
-		m_ResultToInventory[3] = -2;
-		m_ResultUseSoftSkills[3] = true;// set 'true' to allow modification of the values by softskills on this result
-		m_ResultReplacesIngredient[3] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
-		
-		//result5
-		AddResult("nm_BandanaDummy");//single result
-		m_ResultSetFullQuantity[4] = false;
-		m_ResultSetQuantity[4] = -1;
-		m_ResultSetHealth[4] = -1;
-		m_ResultInheritsHealth[4] = 0;// (value) == -1 means do nothing; a (value) >= 0 means this result will inherit health from ingredient number (value);(value) == -2 means this result will inherit health from all ingredients averaged(result_health = combined_health_of_ingredients / number_of_ingredients)
-		m_ResultInheritsColor[4] = -1;// (value) == -1 means do nothing; a (value) >= 0 means this result classname will be a composite of the name provided in AddResult method and config value "color" of ingredient (value)
-		m_ResultToInventory[4] = -2;
-		m_ResultUseSoftSkills[4] = true;// set 'true' to allow modification of the values by softskills on this result
-		m_ResultReplacesIngredient[4] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
 	}
 
 	override bool CanDo(ItemBase ingredients[], PlayerBase player)
@@ -172,7 +140,7 @@ class nm_CraftBandanaRaincoat extends RecipeBase
 		for (int i = 0; i < results.Count(); i++)
 		{
 			// Cast each result item to the appropriate type
-			nm_BandanaDummy bandanaDummyResult = nm_BandanaDummy.Cast(results[i]);
+			nm_BandanaRCDummy bandanaDummyResult = nm_BandanaRCDummy.Cast(results[i]);
 			if (bandanaDummyResult)
 			{
 				bandanaDummyResult.SetObjectTexture(2, selectedTexture);

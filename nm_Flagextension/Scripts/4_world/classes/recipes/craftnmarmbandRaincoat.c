@@ -65,7 +65,7 @@ class nm_CraftArmbandRaincoat extends RecipeBase
 		
 		// crafting multiple results
 		//result1
-		AddResult("nm_DoubleArmbandDummy");
+		AddResult("nm_DoubleArmbandRCDummy");
 		m_ResultSetFullQuantity[0] = false;
 		m_ResultSetQuantity[0] = -1;
 		m_ResultSetHealth[0] = -1;
@@ -76,7 +76,7 @@ class nm_CraftArmbandRaincoat extends RecipeBase
 		m_ResultReplacesIngredient[0] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
 		
 		//result2
-		AddResult("nm_DoubleArmbandDummy");//single result
+		AddResult("nm_DoubleArmbandRCDummy");//single result
 		m_ResultSetFullQuantity[1] = false;
 		m_ResultSetQuantity[1] = -1;
 		m_ResultSetHealth[1] = -1;
@@ -87,7 +87,7 @@ class nm_CraftArmbandRaincoat extends RecipeBase
 		m_ResultReplacesIngredient[1] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
 		
 		//result3
-		AddResult("nm_DoubleArmbandDummy");//single result
+		AddResult("nm_DoubleArmbandRCDummy");//single result
 		m_ResultSetFullQuantity[2] = false;
 		m_ResultSetQuantity[2] = -1;
 		m_ResultSetHealth[2] = -1;
@@ -98,7 +98,7 @@ class nm_CraftArmbandRaincoat extends RecipeBase
 		m_ResultReplacesIngredient[2] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
 		
 		//result4
-		AddResult("nm_DoubleArmbandDummy");//single result
+		AddResult("nm_DoubleArmbandRCDummy");//single result
 		m_ResultSetFullQuantity[3] = false;
 		m_ResultSetQuantity[3] = -1;
 		m_ResultSetHealth[3] = -1;
@@ -109,7 +109,7 @@ class nm_CraftArmbandRaincoat extends RecipeBase
 		m_ResultReplacesIngredient[3] = -1;// value == -1 means do nothing; a value >= 0 means this result will transfer item propertiesvariables, attachments etc.. from an ingredient value
 		
 		//result5
-		AddResult("nm_DoubleArmbandDummy");//single result
+		AddResult("nm_DoubleArmbandRCDummy");//single result
 		m_ResultSetFullQuantity[4] = false;
 		m_ResultSetQuantity[4] = -1;
 		m_ResultSetHealth[4] = -1;
@@ -172,7 +172,7 @@ class nm_CraftArmbandRaincoat extends RecipeBase
 		for (int i = 0; i < results.Count(); i++)
 		{
 			// Cast each result item to the appropriate type
-			nm_DoubleArmbandDummy armbandDummyResult = nm_DoubleArmbandDummy.Cast(results[i]);
+			nm_DoubleArmbandRCDummy armbandDummyResult = nm_DoubleArmbandRCDummy.Cast(results[i]);
 			if (armbandDummyResult)
 			{
 				armbandDummyResult.SetObjectTexture(2, selectedTexture);

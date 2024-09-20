@@ -383,7 +383,10 @@ class cfgVehicles
 			};
 		};
 	};
-
+	class nm_DoubleArmbandRCDummy: nm_DoubleArmbandDummy
+	{
+		Scope=2;
+	};
 	class nm_BandanaDummy: Clothing
 	{
 		scope=2;
@@ -488,6 +491,10 @@ class cfgVehicles
 				};
 			};
 		};
+	};
+	class nm_BandanaRCDummy: nm_BandanaDummy
+	{
+		scope=2;
 	};
 	class nm_SlingbagDummy: Clothing
 	{

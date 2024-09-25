@@ -1,5 +1,6 @@
 Credits
 This mod is made by n3msi and Buddy
+
 Special thanks to Shaggoth for testing this on his liveserver.
 Thank you to:
 - Gnossiennes for https://sketchfab.com/3d-models/bandana-b9c3493a4c374bcb87f5aa71cf134fdf  (Creative Commons Attribution)

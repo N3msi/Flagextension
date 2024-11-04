@@ -20,6 +20,11 @@ class nm_ArmbandDummy extends Clothing
     {	
 	}
 	
+	override bool CanHaveWetness()
+	{
+		return false;
+	}
+	
     void SetFlagAttributes(string texturePath, string nmFlagName)
     {
         m_nmFlagTexture = texturePath;
@@ -236,5 +241,6 @@ class nm_ArmbandDummy extends Clothing
 				}
 			}
 		}
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Synchronize, 60, false);
 	}
 }

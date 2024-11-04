@@ -14,6 +14,11 @@ class nm_DoubleArmbandRCDummy extends Clothing
     {
     }
 
+	override bool CanHaveWetness()
+	{
+		return false;
+	}
+	
     override bool CanPutInCargo(EntityAI parent)
     {
         if (!super.CanPutInCargo(parent)) { return false; }

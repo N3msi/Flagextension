@@ -12,6 +12,11 @@ class nm_SlingbagDummy: Clothing
 	void ~nm_SlingbagDummy()
 	{
 	}
+
+	override bool CanHaveWetness()
+	{
+		return false;
+	}
 	
 	void SetFlagAttributes(string texturePath, string nmFlagName)
     {

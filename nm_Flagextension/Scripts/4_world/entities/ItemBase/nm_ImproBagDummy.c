@@ -11,6 +11,11 @@ class nm_ImproBagDummy extends Clothing
 	void ~nm_ImproBagDummy()
 	{
 	}
+
+	override bool CanHaveWetness()
+	{
+		return false;
+	}
 	
 	void SetFlagAttributes(string texturePath, string nmFlagName)
     {

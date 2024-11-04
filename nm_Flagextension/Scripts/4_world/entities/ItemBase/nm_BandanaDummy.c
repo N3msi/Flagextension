@@ -19,6 +19,11 @@ class nm_BandanaDummy: Clothing
 	void ~nm_BandanaDummy()
     {	
 	}
+
+	override bool CanHaveWetness()
+	{
+		return false;
+	}
 	
 	override bool CanBeDisinfected()
 	{

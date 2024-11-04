@@ -52,6 +52,7 @@ class cfgVehicles
 		carveNavmesh = 1;
 		itemBehaviour=1;
 		physLayer = "item_small";
+		varWetMax=0;
 		hiddenSelections[]=
 		{
 			"camo"
@@ -125,6 +126,7 @@ class cfgVehicles
 		repairCosts[]={};
 		itemBehaviour=0;
 		absorbency=0.1;
+		varWetMax=0;
 		hiddenSelections[]=
 		{
 			"camo"
@@ -215,11 +217,11 @@ class cfgVehicles
 		rotationFlags=34;
 		weight=50;
 		itemSize[]={2,2};
-		varWetMax=1;
+		varWetMax=0;
 		quickBarBonus=0;
 		repairableWithKits[]={5,2};
 		repairCosts[]={30,25};
-		visibilityModifier=0.89999998;
+		//visibilityModifier=0.89999998;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -306,10 +308,10 @@ class cfgVehicles
 		weight=50;
 		itemSize[]={1,2};
 		ragQuantity=2;
-		varWetMax=1;
+		varWetMax=0;
 		repairableWithKits[]={5,2};
 		repairCosts[]={30,25};
-		visibilityModifier=0.94999999;
+		//visibilityModifier=0.94999999;
 		hiddenSelections[]=
 		{
 			"small",
@@ -400,7 +402,7 @@ class cfgVehicles
 			"Clothing",
 			"Headgear"
 		};
-		visibilityModifier=0.89999998;
+		//visibilityModifier=0.89999998;
 		inventorySlot[]=
 		{
 			"Headgear",
@@ -410,7 +412,7 @@ class cfgVehicles
 		weight=120;
 		itemSize[]={3,1};
 		ragQuantity=1;
-		varWetMax=1;
+		varWetMax=0;
 		heatIsolation=0.40000001;
 		repairableWithKits[]={5,2};
 		repairCosts[]={30,25};
@@ -520,9 +522,9 @@ class cfgVehicles
 		itemSize[]={4,4};
 		itemsCargoSize[]={6,5};
 		weight=900;
-		varWetMax=1;
+		varWetMax=0;
 		heatIsolation=0.30000001;
-		visibilityModifier=0.80000001;
+		//visibilityModifier=0.80000001;
 		repairableWithKits[]={5,2};
 		repairCosts[]={30,25};
 		soundAttType="Small";
@@ -627,9 +629,9 @@ class cfgVehicles
 		itemSize[]={4,5};
 		itemsCargoSize[]={7,6};
 		weight=2400;
-		varWetMax=1;
+		varWetMax=0;
 		heatIsolation=0.40000001;
-		visibilityModifier=0.69999999;
+		//visibilityModifier=0.69999999;
 		repairableWithKits[]={5,2};
 		repairCosts[]={30,25};
 		soundAttType="Small";
@@ -724,7 +726,8 @@ class cfgVehicles
 			"posi_back",
 			"stick",
 			"camo"
-		};		
+		};
+		varWetMax=0;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -790,6 +793,7 @@ class cfgVehicles
 		repairCosts[]={};
 		itemBehaviour=0;
 		absorbency=0.1;
+		varWetMax=0;
 		attachments[]+=
 		{
 			"Material_FPole_Flag"
@@ -1056,6 +1060,7 @@ class cfgVehicles
 		{
 			"camo"
 		};
+		varWetMax=0;
 		class DamageSystem
 		{
 			class GlobalHealth
